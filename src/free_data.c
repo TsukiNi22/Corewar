@@ -5,7 +5,7 @@
 ** Free data
 */
 
-#include "sample.h"
+#include "corewar.h"
 #include "error.h"
 #include <stdlib.h>
 

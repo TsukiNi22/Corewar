@@ -28,7 +28,7 @@ endif
 
 GLOBAL :=	main.c \
 			const.c \
-			sample.c \
+			corewar.c \
 			op.c \
 			free_data.c
 

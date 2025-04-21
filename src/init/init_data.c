@@ -5,7 +5,7 @@
 ** Init the main data
 */
 
-#include "sample.h"
+#include "corewar.h"
 #include "error.h"
 
 int init_data(main_data_t *data)

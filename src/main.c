@@ -5,7 +5,7 @@
 ** Main of the project
 */
 
-#include "sample.h"
+#include "corewar.h"
 #include "write.h"
 #include "error.h"
 #include <stdbool.h>
@@ -20,7 +20,7 @@ int main(int const argc, char const *argv[])
     data.exe_name = argv[0];
     data.help = false;
     data.err_sys = false;
-    res = sample(argc, argv, &data);
+    res = corewar(argc, argv, &data);
     if (res == KO || res == FATAL_ERR) {
         if (res != FATAL_ERR)
             free_data(&data);

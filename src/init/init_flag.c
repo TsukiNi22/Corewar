@@ -8,7 +8,7 @@
 #include "memory.h"
 #include "my_string.h"
 #include "write.h"
-#include "sample.h"
+#include "corewar.h"
 #include "error.h"
 #include <stdbool.h>
 

@@ -6,7 +6,7 @@
 */
 
 #include "define.h"
-#include "sample.h"
+#include "corewar.h"
 #include "write.h"
 #include "error.h"
 #include <errno.h>

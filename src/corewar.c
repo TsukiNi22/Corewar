@@ -1,14 +1,14 @@
 /*
 ** EPITECH PROJECT, 2025
-** sample.c
+** corewar.c
 ** File description:
-** Sample
+** Corewar
 */
 
-#include "sample.h"
+#include "corewar.h"
 #include "error.h"
 
-int sample(int const argc, char const *argv[], main_data_t *data)
+int corewar(int const argc, char const *argv[], main_data_t *data)
 {
     if (!data || !argv)
         return err_prog(PTR_ERR, KO, ERR_INFO);

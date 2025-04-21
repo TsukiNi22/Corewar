@@ -6,7 +6,7 @@
 */
 
 #include "macro.h"
-#include "sample.h"
+#include "corewar.h"
 #include "error.h"
 
 int flag_null(main_data_t *data, UNUSED int const argc, char const *argv[])

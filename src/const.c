@@ -5,7 +5,7 @@
 ** Global const
 */
 
-#include "sample.h"
+#include "corewar.h"
 
 char const flags[] = {
     'h'

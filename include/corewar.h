@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2025
-** sample.h
+** corewar.h
 ** File description:
-** Sample header
+** Corewar header
 */
 
-#ifndef SAMPLE_H
-    #define SAMPLE_H
+#ifndef COREWAR_H
+    #define COREWAR_H
 
     //----------------------------------------------------------------//
     /* INCLUDE */
@@ -30,8 +30,8 @@ typedef struct main_data_s {
 //----------------------------------------------------------------//
 /* PROTOTYPE */
 
-/* sample */ // Error: KO
-int sample(int const argc, char const *argv[], main_data_t *data);
+/* corewar */ // Error: KO
+int corewar(int const argc, char const *argv[], main_data_t *data);
 
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
@@ -57,4 +57,4 @@ extern int const flags_argc[];
 extern int (* const flag_functions[])(main_data_t *,
     int const, char const *[]);
 
-#endif /* SAMPLE_H */
+#endif /* COREWAR_H */
