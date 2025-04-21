@@ -29,14 +29,12 @@
     #define COREWAR_EXEC_MAGIC 0xea83f3
 
     /* live */
-    #define CYCLE_TO_DIE 1536 /* number of cycle before beig declared dead */
+    #define CYCLE_TO_DIE 1536 /* number of cycle before declared dead */
     #define CYCLE_DELTA 5
     #define NBR_LIVE 40
 
 //----------------------------------------------------------------//
 /* TYPEDEF */
-
-typedef char args_type_t;
 
 typedef struct op_s {
     char *mnemonique;
