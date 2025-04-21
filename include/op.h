@@ -45,7 +45,6 @@ typedef struct op_s {
     args_type_t type[MAX_ARGS_NUMBER];
     char code;
     int nbr_cycles;
-    char *comment;
 } op_t;
 
 /*
