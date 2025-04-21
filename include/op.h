@@ -11,10 +11,6 @@
     //----------------------------------------------------------------//
     /* DEFINE */
 
-    /* sample */
-    #define MEM_SIZE (6 * 1024)
-    #define IDX_MOD 512 /* modulo of the index < */
-
     /* regs */
     #define REG_NUMBER 16 /* r1 <--> rx */
 
@@ -25,6 +21,9 @@
     #define T_LAB 8 /* LABEL */
 
     /* global info */
+    #define MEM_SIZE (6 * 1024)
+    #define IDX_MOD 512 /* modulo of the index < */
+    #define MAX_ARGS_NUMBER 4
     #define PROG_NAME_LENGTH 128
     #define COMMENT_LENGTH 2048
     #define COREWAR_EXEC_MAGIC 0xea83f3

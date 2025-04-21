@@ -11,7 +11,7 @@ on:
 env:
   MIRROR_URL: 'git@github.com:EpitechPGEPromo2029/B-CPE-200-BDX-2-1-corewar-mathias.dumoulin.git'
   MIRROR_REPO: 'EpitechPGEPromo2029/B-CPE-200-BDX-2-1-corewar-mathias.dumoulin'
-  EXECUTABLES: "42sh"
+  EXECUTABLES: "corewar"
 
 jobs:
   check_repository:

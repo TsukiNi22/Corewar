@@ -7,7 +7,7 @@
 
 CC := gcc
 
-TARGET := a.out
+TARGET := corewar
 TEST_TARGET := unit_tests
 BUILD_DIR := .obj
 
@@ -29,6 +29,7 @@ endif
 GLOBAL :=	main.c \
 			const.c \
 			sample.c \
+			op.c \
 			free_data.c
 
 INIT :=		init/init_data.c \
@@ -72,7 +73,7 @@ fclean: clean
 .NOTPARALLEL:
 re: fclean $(TARGET)
 
-unit_tests:
+unit_tests: $(TARGET)
 	$(CC) -o $(TEST_TARGET) $(TEST_OBJ) tests/*.c \
 	$(CPPFLAGS) $(LDFLAGS) --coverage -lcriterion
 
