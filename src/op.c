@@ -8,7 +8,7 @@
 
 #include "op.h"
 
-op_t op_tab[] = {
+const op_t op_tab[] = {
     {"live", 1, {T_DIR}, 1, 10},
     {"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5},
     {"st", 2, {T_REG, T_IND | T_REG}, 3, 5},
@@ -25,5 +25,5 @@ op_t op_tab[] = {
     {"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50},
     {"lfork", 1, {T_DIR}, 15, 1000},
     {"aff", 1, {T_REG}, 16, 2},
-    {0, 0, {0}, 0, 0}
+    {0}
 };

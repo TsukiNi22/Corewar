@@ -57,6 +57,6 @@ typedef struct header_s {
 //----------------------------------------------------------------//
 /* EXTERN */
 
-extern op_t op_tab[];
+extern const op_t op_tab[];
 
 #endif /* OP_H */
