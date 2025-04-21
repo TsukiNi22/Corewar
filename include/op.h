@@ -14,6 +14,11 @@
     /* regs */
     #define REG_NUMBER 16 /* r1 <--> rx */
 
+    /* size (in bytes) */
+    #define IND_SIZE 2
+    #define DIR_SIZE 4
+    #define REG_SIZE DIR_SIZE
+
     /* ID for type */
     #define T_REG 1 /* register */
     #define T_DIR 2 /* direct  (ld  #1,r1  put 1 into r1) */
