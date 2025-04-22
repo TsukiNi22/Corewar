@@ -30,3 +30,23 @@ int (* const flag_functions[])(main_data_t *, int const, char const *[]) = {
     &flag_number, // n
     &flag_address, // a
 };
+
+
+int (* const op_cmd[])(champion_t *, process_t *, unsigned char [MEM_SIZE]) = {
+    &op_live,
+    &op_ld,
+    &op_st,
+    &op_add,
+    &op_sub,
+    &op_and,
+    &op_or,
+    &op_xor,
+    &op_zjmp,
+    &op_ldi,
+    &op_sti,
+    &op_fork,
+    &op_lld,
+    &op_lldi,
+    &op_lfork,
+    &op_aff,
+};

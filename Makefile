@@ -47,7 +47,24 @@ INIT :=		init/init_data.c \
 			init/flag/number.c \
 			init/flag/address.c
 
-FILES := $(GLOBAL) $(INIT)
+OP_CMD := 	op_exe/live.c \
+			op_exe/ld.c \
+			op_exe/st.c \
+			op_exe/add.c \
+			op_exe/sub.c \
+			op_exe/and.c \
+			op_exe/or.c \
+			op_exe/xor.c \
+			op_exe/zjmp.c \
+			op_exe/ldi.c \
+			op_exe/sti.c \
+			op_exe/fork.c \
+			op_exe/lld.c \
+			op_exe/lldi.c \
+			op_exe/lfork.c \
+			op_exe/aff.c
+
+FILES := $(GLOBAL) $(INIT) $(OP_CMD)
 SRC := $(addprefix src/, $(FILES))
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 

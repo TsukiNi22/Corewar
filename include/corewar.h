@@ -104,6 +104,40 @@ int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
 int update_cycle(main_data_t *data); // Error: KO
 int exe_memory(main_data_t *data); // Error: KO
 
+/* op_cmd */
+int op_live(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_ld(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_st(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_add(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_sub(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_and(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_or(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_xor(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_zjmp(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_ldi(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_sti(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_fork(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_lld(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_lldi(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_lfork(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+int op_aff(champion_t *champion, process_t *process,
+    unsigned char memory[MEM_SIZE]); // Error: KO
+
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
 int init_global(main_data_t *data); // Error: KO
@@ -135,5 +169,8 @@ extern char const *flags[];
 extern char const *full_flags[];
 extern int (* const flag_functions[])(main_data_t *,
     int const, char const *[]);
+
+/* op command */
+extern int (* const op_cmd[])(champion_t *, process_t *, unsigned char [MEM_SIZE]);
 
 #endif /* COREWAR_H */

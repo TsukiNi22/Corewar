@@ -13,6 +13,7 @@ static int exe_process(champion_t *champion, process_t *process)
 {
     if (!champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+
     return OK;
 }
 
