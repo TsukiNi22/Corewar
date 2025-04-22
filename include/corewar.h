@@ -13,7 +13,7 @@
 
     /* define */
     #include <op.h> // define const
-    
+
     /* type */
     #include <array.h> // array_t
     #include <stdbool.h> // boolean
@@ -24,13 +24,13 @@
 
 /* Setup of the size of the reg */
 #if REG_SIZE == 1
-    typedef int8_t t_reg;
+typedef int8_t reg_t;
 #elif REG_SIZE == 2
-    typedef int16_t t_reg;
+typedef int16_t reg_t;
 #elif REG_SIZE == 4
-    typedef int32_t t_reg;
+typedef int32_t reg_t;
 #elif REG_SIZE == 8
-    typedef int64_t t_reg;
+typedef int64_t reg_t;
 #else
     #error "Unsupported REG_SIZE"
 #endif
@@ -49,7 +49,7 @@ typedef struct champion_s {
     int cycle_since_action;
 
     /* reg */
-    t_reg registers[REG_NUMBER];
+    reg_t registers[REG_NUMBER];
 
     /* option */
     int prog_number;

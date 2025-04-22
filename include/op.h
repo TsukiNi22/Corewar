@@ -17,7 +17,7 @@
     /* size (in bytes) */
     #define IND_SIZE 2
     #define DIR_SIZE 4
-    #define REG_SIZE DIR_SIZE
+    #define REG_SIZE 4
 
     /* ID for type */
     #define T_REG 1 /* register */
