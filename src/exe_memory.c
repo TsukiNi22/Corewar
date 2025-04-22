@@ -44,6 +44,8 @@ int exe_memory(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (size_t i = 0; i < data->champions->len; i++) {
+        if (!((champion_t *) data->champions->data[i])->alive)
+            continue;
         if (exe_champion(data, data->champions->data[i]) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
     }
