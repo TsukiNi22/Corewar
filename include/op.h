@@ -28,6 +28,8 @@
     /* global info */
     #define MEM_SIZE (6 * 1024)
     #define IDX_MOD 512 /* modulo of the index < */
+    #define MIN_CHAMPIONS 2
+    #define MAX_CHAMPIONS 4
     #define MAX_ARGS_NUMBER 4
     #define PROG_NAME_LENGTH 128
     #define COMMENT_LENGTH 2048

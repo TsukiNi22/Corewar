@@ -37,6 +37,9 @@ typedef int64_t reg_t;
 
 /* champions */
 typedef struct champion_s {
+    /* file */
+    char const *file;
+
     /* info */
     int magic;
     char name[PROG_NAME_LENGTH + 1];
@@ -62,7 +65,7 @@ typedef struct main_data_s {
     char const *exe_name;
 
     /* memory */
-    char memory[MEM_SIZE + 1];
+    char memory[MEM_SIZE];
 
     /* champions list */
     array_t *champions;
@@ -75,6 +78,8 @@ typedef struct main_data_s {
 
     /* option */
     int dump_cycle;
+    int next_prog_number;
+    int next_load_address;
 
     /* ouput */
     bool help;
@@ -90,12 +95,20 @@ int corewar(int const argc, char const *argv[], main_data_t *data);
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
 int init_global(main_data_t *data); // Error: KO
+int init_option(main_data_t *data); // Error: KO
 
-/* init_flag */
-int init_flag(main_data_t *data,
+/* init_argument */
+int init_argument(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
+int add_champions(main_data_t *data, char const *file); // Error: KO
 int flag_help(void); // Error: KO
 int flag_null(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_dump(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_number(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_address(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 
 /* exit */
@@ -105,9 +118,8 @@ int free_data(main_data_t *data); // Error: EPITECH_ERR
 /* GLOBAL_CONST */
 
 /* flag */
-extern char const flags[];
+extern char const *flags[];
 extern char const *full_flags[];
-extern int const flags_argc[];
 extern int (* const flag_functions[])(main_data_t *,
     int const, char const *[]);
 

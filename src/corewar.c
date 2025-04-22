@@ -14,8 +14,8 @@ int corewar(int const argc, char const *argv[], main_data_t *data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (init_data(data) == KO)
         return err_custom("Data initialisation error", FATAL_ERR, ERR_INFO);
-    if (init_flag(data, argc, argv) == KO)
-        return err_custom("Flag initialisation error", KO, ERR_INFO);
+    if (init_argument(data, argc, argv) == KO)
+        return err_custom("Argument initialisation error", KO, ERR_INFO);
     if (data->help)
         return OK;
     return OK;
