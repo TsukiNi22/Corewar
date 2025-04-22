@@ -78,6 +78,7 @@ typedef struct main_data_s {
     /* live status */
     bool live_status[MAX_CHAMPIONS];
     int nbr_live;
+    int total_cycle;
     int actual_cycle;
     int cycle_to_die;
 

@@ -19,6 +19,7 @@ int init_global(main_data_t *data)
     for (int i = 0; i < MAX_CHAMPIONS; i++)
         data->live_status[i] = false;
     data->nbr_live = 0;
+    data->total_cycle = 0;
     data->actual_cycle = 0;
     data->cycle_to_die = CYCLE_TO_DIE;
     for (int i = 0; i < MEM_SIZE; i++)
