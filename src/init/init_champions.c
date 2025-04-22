@@ -101,6 +101,9 @@ int add_champions(main_data_t *data, char const *file)
 
     if (!data || !file)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (data->champions->len == MAX_CHAMPIONS)
+        return err_system(data, KO, data->exe_name,
+        "Too many champions are given");
     if (check_file(data, file) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     champion = malloc(sizeof(champion_t));
