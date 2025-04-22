@@ -54,6 +54,7 @@ typedef struct champion_s {
     int size;
 
     /* status */
+    bool carry;
     array_t *process;
 
     /* reg */
