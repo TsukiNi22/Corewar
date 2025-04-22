@@ -17,7 +17,7 @@ int init_global(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (int i = 0; i < MAX_CHAMPIONS; i++)
-        data->live_status[i] = false;
+        data->live_status[i] = true;
     data->nbr_live = 0;
     data->total_cycle = 0;
     data->actual_cycle = 0;

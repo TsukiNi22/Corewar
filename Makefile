@@ -31,6 +31,8 @@ GLOBAL :=	main.c \
 			const.c \
 			corewar.c \
 			setup.c \
+			update_cycle.c \
+			exe_memory.c \
 			dump.c \
 			free_data.c
 

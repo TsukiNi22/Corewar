@@ -90,6 +90,7 @@ static int init_champions(main_data_t *data, champion_t *champion)
     champion->load_address = data->next_load_address;
     data->next_prog_number = -1;
     data->next_load_address = -1;
+    champion->alive = true;
     champion->carry = false;
     return OK;
 }

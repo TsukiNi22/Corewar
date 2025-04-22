@@ -54,6 +54,7 @@ typedef struct champion_s {
     int size;
 
     /* status */
+    bool alive;
     bool carry;
     array_t *process;
 
@@ -100,6 +101,8 @@ typedef struct main_data_s {
 int corewar(int const argc, char const *argv[], main_data_t *data);
 int setup(main_data_t *data); // Error: KO
 int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
+int update_cycle(main_data_t *data); // Error: KO
+int exe_memory(main_data_t *data); // Error: KO
 
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
