@@ -8,10 +8,9 @@
 #include "corewar.h"
 #include "error.h"
 
-int op_ldi(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE])
+int op_ldi(main_data_t *data, champion_t *champion, process_t *process)
 {
-    if (!champion || !process || !memory)
+    if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     return OK;
 }

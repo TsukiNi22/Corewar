@@ -34,6 +34,8 @@ static int loop(main_data_t *data)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (data->total_cycle >= data->dump_cycle)
+            return OK;
     }
     return OK;
 }

@@ -104,39 +104,23 @@ int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
 int update_cycle(main_data_t *data); // Error: KO
 int exe_memory(main_data_t *data); // Error: KO
 
-/* op_cmd */
-int op_live(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_ld(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_st(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_add(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_sub(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_and(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_or(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_xor(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_zjmp(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_ldi(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_sti(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_fork(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_lld(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_lldi(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_lfork(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
-int op_aff(champion_t *champion, process_t *process,
-    unsigned char memory[MEM_SIZE]); // Error: KO
+/* op_cmd */ // Error: KO
+int op_live(main_data_t *data, champion_t *champion, process_t *process);
+int op_ld(main_data_t *data, champion_t *champion, process_t *process);
+int op_st(main_data_t *data, champion_t *champion, process_t *process);
+int op_add(main_data_t *data, champion_t *champion, process_t *process);
+int op_sub(main_data_t *data, champion_t *champion, process_t *process);
+int op_and(main_data_t *data, champion_t *champion, process_t *process);
+int op_or(main_data_t *data, champion_t *champion, process_t *process);
+int op_xor(main_data_t *data, champion_t *champion, process_t *process);
+int op_zjmp(main_data_t *data, champion_t *champion, process_t *process);
+int op_ldi(main_data_t *data, champion_t *champion, process_t *process);
+int op_sti(main_data_t *data, champion_t *champion, process_t *process);
+int op_fork(main_data_t *data, champion_t *champion, process_t *process);
+int op_lld(main_data_t *data, champion_t *champion, process_t *process);
+int op_lldi(main_data_t *data, champion_t *champion, process_t *process);
+int op_lfork(main_data_t *data, champion_t *champion, process_t *process);
+int op_aff(main_data_t *data, champion_t *champion, process_t *process);
 
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
@@ -171,6 +155,6 @@ extern int (* const flag_functions[])(main_data_t *,
     int const, char const *[]);
 
 /* op command */
-extern int (* const op_cmd[])(champion_t *, process_t *, unsigned char [MEM_SIZE]);
+extern int (* const op_cmd[])(main_data_t *, champion_t *, process_t *);
 
 #endif /* COREWAR_H */

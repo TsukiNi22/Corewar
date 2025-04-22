@@ -45,11 +45,9 @@ int update_cycle(main_data_t *data)
     }
     data->total_cycle++;
     data->actual_cycle++;
-    if (data->dump_cycle != KO && data->total_cycle != 0
-        && data->total_cycle % data->dump_cycle == 0) {
-        if (dump_memory(data->memory) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    }
+    if (data->total_cycle >= data->dump_cycle
+        && dump_memory(data->memory) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (data->actual_cycle >= data->cycle_to_die) {
         if (check_live(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);

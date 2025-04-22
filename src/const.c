@@ -32,7 +32,7 @@ int (* const flag_functions[])(main_data_t *, int const, char const *[]) = {
 };
 
 
-int (* const op_cmd[])(champion_t *, process_t *, unsigned char [MEM_SIZE]) = {
+int (* const op_cmd[])(main_data_t *, champion_t *, process_t *) = {
     &op_live,
     &op_ld,
     &op_st,
