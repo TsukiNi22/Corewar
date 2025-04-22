@@ -62,6 +62,8 @@ static int setup_memory(main_data_t *data)
         if (set_prog(data, champion->file, champion->size,
             champion->load_address) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        ((process_t *) champion->process->data[0])->index_to_exe =
+        champion->load_address;
     }
     return OK;
 }
