@@ -11,16 +11,69 @@
     //----------------------------------------------------------------//
     /* INCLUDE */
 
+    /* define */
+    #include <op.h> // define const
+    
     /* type */
+    #include <array_t.h> // array_t
     #include <stdbool.h> // boolean
 
 //----------------------------------------------------------------//
 /* TYPEDEF */
 
+/* Setup of the size of the reg */
+#if REG_SIZE == 1
+    typedef int8_t t_reg;
+#elif REG_SIZE == 2
+    typedef int16_t t_reg;
+#elif REG_SIZE == 4
+    typedef int32_t t_reg;
+#elif REG_SIZE == 8
+    typedef int64_t t_reg;
+#else
+    #error "Unsupported REG_SIZE"
+#endif
+
+/* champions */
+typedef struct champion_s {
+    /* info */
+    int magic;
+    char name[PROG_NAME_LENGTH + 1];
+    char comment[COMMENT_LENGTH + 1];
+    int size;
+
+    /* status */
+    int index_to_exe;
+    int cycle_delay;
+    int cycle_since_action;
+
+    /* reg */
+    t_reg registers[REG_NUMBER];
+
+    /* option */
+    int prog_number;
+    int load_address;
+} champion_t;
+
 /* data */
 typedef struct main_data_s {
-    /* global_info */
+    /* global info */
     char const *exe_name;
+
+    /* memory */
+    char memory[MEM_SIZE + 1];
+
+    /* champions list */
+    array_t *champions;
+
+    /* live status */
+    bool *live_status;
+    int nbr_live;
+    int actual_cycle;
+    int cycle_to_die;
+
+    /* option */
+    int dump_cycle;
 
     /* ouput */
     bool help;
