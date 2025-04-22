@@ -27,9 +27,11 @@ else ifeq ($(d), o)
 endif
 
 GLOBAL :=	main.c \
+			op.c \
 			const.c \
 			corewar.c \
-			op.c \
+			setup.c \
+			dump.c \
 			free_data.c
 
 INIT :=		init/init_data.c \

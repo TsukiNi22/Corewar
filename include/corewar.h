@@ -24,13 +24,13 @@
 
 /* Setup of the size of the reg */
 #if REG_SIZE == 1
-typedef int8_t reg_t;
+typedef uint8_t reg_t;
 #elif REG_SIZE == 2
-typedef int16_t reg_t;
+typedef uint16_t reg_t;
 #elif REG_SIZE == 4
-typedef int32_t reg_t;
+typedef uint32_t reg_t;
 #elif REG_SIZE == 8
-typedef int64_t reg_t;
+typedef uint64_t reg_t;
 #else
     #error "Unsupported REG_SIZE"
 #endif
@@ -71,7 +71,7 @@ typedef struct main_data_s {
     char const *exe_name;
 
     /* memory */
-    char memory[MEM_SIZE];
+    unsigned char memory[MEM_SIZE];
 
     /* champions list */
     array_t *champions;
@@ -98,6 +98,8 @@ typedef struct main_data_s {
 
 /* corewar */ // Error: KO
 int corewar(int const argc, char const *argv[], main_data_t *data);
+int setup(main_data_t *data); // Error: KO
+int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
 
 /* init_data */
 int init_data(main_data_t *data); // Error: KO
