@@ -14,5 +14,7 @@ int init_data(main_data_t *data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (init_global(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    if (init_option(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return OK;
 }
