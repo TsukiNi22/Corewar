@@ -34,7 +34,8 @@ int free_data(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, EPITECH_ERR, ERR_INFO);
-    if (data->champions && delete_array(&data->champions, &free_champions) == KO)
+    if (data->champions
+        && delete_array(&data->champions, &free_champions) == KO)
         return err_prog(UNDEF_ERR, EPITECH_ERR, ERR_INFO);
     return OK;
 }

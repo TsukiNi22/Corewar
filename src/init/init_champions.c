@@ -102,7 +102,7 @@ static int check_file(main_data_t *data, char const *file)
     if (!data || !file)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (lstat(file, &st) == KO)
-        return err_system(data, KO, file, "Error while opening the given file");
+        return err_system(data, KO, file, "Error can't check the given file");
     if (!S_ISREG(st.st_mode))
         return err_system(data, KO, file, "This definitly not a regular file");
     fd = open(file, O_RDONLY);

@@ -58,6 +58,7 @@ int init_argument(main_data_t *data, int const argc, char const *argv[])
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
     }
     if (data->champions->len < MIN_CHAMPIONS)
-        return err_system(data, KO, data->exe_name, "Too few champions are given");
+        return err_system(data, KO, data->exe_name,
+        "Too few champions are given");
     return OK;
 }
