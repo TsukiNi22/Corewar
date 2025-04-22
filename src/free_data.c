@@ -22,8 +22,6 @@ int free_data(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, EPITECH_ERR, ERR_INFO);
-    if (data->live_status)
-        free(data->live_status);
     if (data->champions && delete_array(&data->champions, &free_ptr) == KO)
         return err_prog(UNDEF_ERR, EPITECH_ERR, ERR_INFO);
     return OK;
