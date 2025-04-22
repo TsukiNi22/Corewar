@@ -9,6 +9,9 @@
 #include "array.h"
 #include "corewar.h"
 #include "error.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <stddef.h>
@@ -68,12 +71,38 @@ static int init_champions(main_data_t *data, champion_t *champion)
     return OK;
 }
 
+static int check_file(main_data_t *data, char const *file)
+{
+    struct stat st = {0};
+    unsigned char buffer[4] = {0};
+    int fd = 0;
+
+    if (!data || !file)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (lstat(file, &st) == KO)
+        return err_system(data, KO, file, "Insufficient permission or Error");
+    if (!S_ISREG(st.st_mode))
+        return err_system(data, KO, file, "This definitly not a regular file");
+    fd = open(file, O_RDONLY);
+    if (fd == KO)
+        return err_system(data, KO, file, "Can't read the given file");
+    if (read(fd, buffer, 4) != 4)
+        return err_prog(READ_FILE_ERR, KO, ERR_INFO);
+    if (COREWAR_EXEC_MAGIC !=
+        ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3]))
+        return err_system(data, KO, file, "Invalid magic number");
+    close(fd);
+    return OK;
+}
+
 int add_champions(main_data_t *data, char const *file)
 {
     champion_t *champion = NULL;
 
     if (!data || !file)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (check_file(data, file) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     champion = malloc(sizeof(champion_t));
     if (!champion)
         return err_prog(MALLOC_ERR, KO, ERR_INFO);

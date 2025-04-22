@@ -41,7 +41,6 @@ typedef struct champion_s {
     char const *file;
 
     /* info */
-    int magic;
     char name[PROG_NAME_LENGTH + 1];
     char comment[COMMENT_LENGTH + 1];
     int size;
