@@ -15,8 +15,9 @@
     #include <op.h> // define const
     
     /* type */
-    #include <array_t.h> // array_t
+    #include <array.h> // array_t
     #include <stdbool.h> // boolean
+    #include <stdint.h> // intx_t
 
 //----------------------------------------------------------------//
 /* TYPEDEF */
