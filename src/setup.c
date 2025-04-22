@@ -50,7 +50,6 @@ static int set_prog(main_data_t *data, char const *file,
     return OK;
 }
 
-
 static int setup_memory(main_data_t *data)
 {
     champion_t *champion = NULL;
