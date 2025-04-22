@@ -70,7 +70,7 @@ typedef struct main_data_s {
     array_t *champions;
 
     /* live status */
-    bool *live_status;
+    bool live_status[MAX_CHAMPIONS];
     int nbr_live;
     int actual_cycle;
     int cycle_to_die;
