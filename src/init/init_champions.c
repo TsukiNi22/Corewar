@@ -47,14 +47,40 @@ static int get_number(array_t *champions)
     return n;
 }
 
+static int get_info(champion_t *champion)
+{
+    unsigned char buffer[4] = {0};
+    int fd = 0;
+
+    if (!champion)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    fd = open(champion->file, O_RDONLY);
+    if (fd == KO)
+        return err_prog(OP_FILE_ERR, KO, ERR_INFO);
+    lseek(fd, 4, SEEK_CUR);
+    if (read(fd, champion->name, PROG_NAME_LENGTH + 1) != PROG_NAME_LENGTH + 1)
+        return err_prog(READ_FILE_ERR, KO, ERR_INFO);
+    lseek(fd, 3, SEEK_CUR);
+    if (read(fd, buffer, 4) != 4)
+        return err_prog(READ_FILE_ERR, KO, ERR_INFO);
+    champion->size = (buffer[0] << 24)
+    | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
+    if (read(fd, champion->comment, COMMENT_LENGTH + 1) != COMMENT_LENGTH + 1)
+        return err_prog(READ_FILE_ERR, KO, ERR_INFO);
+    close(fd);
+    return OK;
+}
+
 static int init_champions(main_data_t *data, champion_t *champion)
 {
     if (!data || !champion)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    champion->name[PROG_NAME_LENGTH] = '\0';
-    champion->comment[COMMENT_LENGTH] = '\0';
+    if (get_info(champion) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     champion->cycle_delay = 0;
     champion->cycle_since_action = 0;
+    for (int i = 0; i < REG_NUMBER; i++)
+        champion->registers[i] = 0;
     if (data->next_prog_number != -1
         && already_used(data->champions, data->next_prog_number))
         return err_system(data, KO, "champion",
@@ -66,8 +92,6 @@ static int init_champions(main_data_t *data, champion_t *champion)
     champion->load_address = data->next_load_address;
     data->next_prog_number = -1;
     data->next_load_address = -1;
-    for (int i = 0; i < REG_NUMBER; i++)
-        champion->registers[i] = 0;
     return OK;
 }
 
