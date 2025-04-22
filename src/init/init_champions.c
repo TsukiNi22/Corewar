@@ -77,8 +77,6 @@ static int init_champions(main_data_t *data, champion_t *champion)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (get_info(champion) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    champion->cycle_delay = 0;
-    champion->cycle_since_action = 0;
     for (int i = 0; i < REG_NUMBER; i++)
         champion->registers[i] = 0;
     if (data->next_prog_number != -1
@@ -119,6 +117,23 @@ static int check_file(main_data_t *data, char const *file)
     return OK;
 }
 
+int init_process(champion_t *champion, int index)
+{
+    process_t *process = NULL;
+
+    if (!champion)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    process = malloc(sizeof(process_t));
+    if (!process)
+        return err_prog(MALLOC_ERR, KO, ERR_INFO);
+    process->index_to_exe = index;
+    process->cycle_delay = 0;
+    process->cycle_since_action = 0;
+    if (add_array(champion->process, process) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    return OK;
+}
+
 int add_champions(main_data_t *data, char const *file)
 {
     champion_t *champion = NULL;
@@ -134,7 +149,9 @@ int add_champions(main_data_t *data, char const *file)
     if (!champion)
         return err_prog(MALLOC_ERR, KO, ERR_INFO);
     champion->file = file;
-    if (init_champions(data, champion) == KO)
+    champion->process = new_array();
+    if (!champion->process || init_process(champion, 0) == KO
+        || init_champions(data, champion) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (add_array(data->champions, champion) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

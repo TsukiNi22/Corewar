@@ -35,6 +35,14 @@ typedef int64_t reg_t;
     #error "Unsupported REG_SIZE"
 #endif
 
+/* champions status */
+typedef struct process_s {
+    /* status */
+    int index_to_exe;
+    int cycle_delay;
+    int cycle_since_action;
+} process_t;
+
 /* champions */
 typedef struct champion_s {
     /* file */
@@ -46,9 +54,7 @@ typedef struct champion_s {
     int size;
 
     /* status */
-    int index_to_exe;
-    int cycle_delay;
-    int cycle_since_action;
+    array_t *process;
 
     /* reg */
     reg_t registers[REG_NUMBER];
@@ -95,6 +101,7 @@ int corewar(int const argc, char const *argv[], main_data_t *data);
 int init_data(main_data_t *data); // Error: KO
 int init_global(main_data_t *data); // Error: KO
 int init_option(main_data_t *data); // Error: KO
+int init_process(champion_t *champion, int index); // Error: KO
 
 /* init_argument */
 int init_argument(main_data_t *data,
