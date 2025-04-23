@@ -13,6 +13,7 @@ int op_sti(main_data_t *data, champion_t *champion, process_t *process)
 {
     unsigned char param = 0;
     unsigned int arg[2] = {0};
+    unsigned int read_val = 0;
     int size[2] = {0};
     int reg = 0;
 
@@ -29,11 +30,16 @@ int op_sti(main_data_t *data, champion_t *champion, process_t *process)
     for (int i = 0; i < 2; i++) {
         size[i] = 1 * (get_param(param, i + 1 + 1) == T_REG) +
         2 * (get_param(param, i + 1 + 1) == T_IND) +
-        4 * (get_param(param, i + 1 + 1) == T_DIR);
+        2 * (get_param(param, i + 1 + 1) == T_DIR);
         for (int j = 0; j < size[i]; j++)
             arg[i] += data->memory[(process->index_to_exe + 1 +
             size[0] * (i == 1) + j) % MEM_SIZE] << (8 * (size[i] - (1 + j)));
-        if (size[i] == 1) {
+        if (size[i] == 2) {
+            for (int j = 0; j < REG_SIZE; j++)
+                read_val = data->memory[(process->index_to_exe + arg[i] % IDX_MOD)
+                % MEM_SIZE] << (8 * (REG_SIZE - (1 + j)));
+            arg[i] = read_val;
+        } else if (size[i] == 1) {
             if (arg[i] == 0 || arg[i] > REG_NUMBER)
                 return OK;
             arg[i] = process->registers[arg[i]];

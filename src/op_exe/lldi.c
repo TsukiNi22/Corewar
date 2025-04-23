@@ -32,9 +32,16 @@ int op_lldi(main_data_t *data, champion_t *champion, process_t *process)
             arg[i] += data->memory[(process->index_to_exe + 1 +
             size[0] * (i == 1) + j) % MEM_SIZE] << (8 * (size[i] - (1 + j)));
     }
-    for (int j = 0; j < IND_SIZE; j++)
-        arg[2] += data->memory[(process->index_to_exe + arg[0] % IDX_MOD)
-        % MEM_SIZE] << (8 * (IND_SIZE - (1 + j)));
+    if (size[0] == 2) {
+        for (int j = 0; j < REG_SIZE; j++)
+            arg[2] += data->memory[(process->index_to_exe + arg[0])
+            % MEM_SIZE] << (8 * (REG_SIZE - (1 + j)));
+    } else if (size[0] == 1) {
+        if (arg[0] == 0 || arg[0] > REG_NUMBER)
+            return OK;
+        arg[2] += process->registers[arg[0] - 1];
+    } else
+        arg[2] += arg[0];
     arg[2] += arg[1];
     for (int j = 0; j < REG_SIZE; j++)
         val += data->memory[(process->index_to_exe + (arg[2] + arg[1])

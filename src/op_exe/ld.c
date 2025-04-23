@@ -30,9 +30,12 @@ int op_ld(main_data_t *data, champion_t *champion, process_t *process)
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
     process->registers[reg - 1] = 0;
-    for (int i = 0; i < REG_SIZE; i++)
-        process->registers[reg - 1] += data->memory[process->index_to_exe +
-        arg_1 % IDX_MOD] << (8 * (REG_SIZE - (1 + i)));
+    if (size == 2)  {   
+        for (int i = 0; i < REG_SIZE; i++)
+            process->registers[reg - 1] += data->memory[process->index_to_exe + i +
+            arg_1 % IDX_MOD] << (8 * (REG_SIZE - (1 + i)));
+    } else
+        process->registers[reg - 1] = arg_1;
     process->index_to_exe += 1 + size + 1 + 1;
     process->carry = (process->registers[reg - 1] == 0);
     return OK;

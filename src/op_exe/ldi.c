@@ -20,9 +20,9 @@ int op_ldi(main_data_t *data, champion_t *champion, process_t *process)
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
-    if ((op_tab[9].type[0] & get_param(param, 1)) == 0
-        || (op_tab[9].type[1] & get_param(param, 2)) == 0
-        || (op_tab[9].type[2] & get_param(param, 3)) == 0)
+    if ((op_tab[13].type[0] & get_param(param, 1)) == 0
+        || (op_tab[13].type[1] & get_param(param, 2)) == 0
+        || (op_tab[13].type[2] & get_param(param, 3)) == 0)
         return OK;
     for (int i = 0; i < 2; i++) {
         size[i] = 1 * (get_param(param, i + 1) == T_REG) +
@@ -32,9 +32,16 @@ int op_ldi(main_data_t *data, champion_t *champion, process_t *process)
             arg[i] += data->memory[(process->index_to_exe + 1 +
             size[0] * (i == 1) + j) % MEM_SIZE] << (8 * (size[i] - (1 + j)));
     }
-    for (int j = 0; j < IND_SIZE; j++)
-        arg[2] += data->memory[(process->index_to_exe + arg[0] % IDX_MOD)
-        % MEM_SIZE] << (8 * (IND_SIZE - (1 + j)));
+    if (size[0] == 2) {
+        for (int j = 0; j < REG_SIZE; j++)
+            arg[2] += data->memory[(process->index_to_exe + arg[0] % IDX_MOD)
+            % MEM_SIZE] << (8 * (REG_SIZE - (1 + j)));
+    } else if (size[0] == 1) {
+        if (arg[0] == 0 || arg[0] > REG_NUMBER)
+            return OK;
+        arg[2] += process->registers[arg[0] - 1];
+    } else
+        arg[2] += arg[0];
     arg[2] += arg[1];
     for (int j = 0; j < REG_SIZE; j++)
         val += data->memory[(process->index_to_exe + (arg[2] + arg[1])

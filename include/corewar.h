@@ -85,6 +85,7 @@ typedef struct main_data_s {
     int cycle_to_die;
 
     /* option */
+    bool spe_dump;
     int dump_cycle;
     int next_prog_number;
     int next_load_address;
@@ -101,6 +102,7 @@ typedef struct main_data_s {
 int corewar(int const argc, char const *argv[], main_data_t *data);
 int setup(main_data_t *data); // Error: KO
 int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
+int dump_custom(array_t *champions, unsigned char memory[MEM_SIZE]); // Error: KO
 int update_cycle(main_data_t *data); // Error: KO
 int exe_memory(main_data_t *data); // Error: KO
 int get_param(unsigned char value, int arg_nb); // Error: none
@@ -137,6 +139,8 @@ int flag_help(void); // Error: KO
 int flag_null(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 int flag_dump(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_ddump(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 int flag_number(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO

@@ -26,7 +26,7 @@ int op_live(main_data_t *data, champion_t *champion, process_t *process)
     res += my_putnbr(STDOUT, champion->prog_number);
     res += my_putchar(STDOUT, '(');
     res += my_putstr(STDOUT, champion->name);
-    res += my_putstr(STDOUT, ")is alive.");
+    res += my_putstr(STDOUT, ")is alive.\n");
     if (res != OK)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return OK;

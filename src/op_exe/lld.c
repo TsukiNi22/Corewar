@@ -19,8 +19,8 @@ int op_lld(main_data_t *data, champion_t *champion, process_t *process)
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
-    if ((op_tab[12].type[0] & get_param(param, 1)) == 0
-        || (op_tab[12].type[1] & get_param(param, 2)) == 0)
+    if ((op_tab[1].type[0] & get_param(param, 1)) == 0
+        || (op_tab[1].type[1] & get_param(param, 2)) == 0)
         return OK;
     size = 2 + 2 * (get_param(param, 1) == T_DIR);
     for (int i = 0; i < size; i++)
@@ -30,9 +30,12 @@ int op_lld(main_data_t *data, champion_t *champion, process_t *process)
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
     process->registers[reg - 1] = 0;
-    for (int i = 0; i < REG_SIZE; i++)
-        process->registers[reg - 1] += data->memory[process->index_to_exe +
-        arg_1] << (8 * (REG_SIZE - (1 + i)));
+    if (size == 2)  {   
+        for (int i = 0; i < REG_SIZE; i++)
+            process->registers[reg - 1] += data->memory[process->index_to_exe + i +
+            arg_1] << (8 * (REG_SIZE - (1 + i)));
+    } else
+        process->registers[reg - 1] = arg_1;
     process->index_to_exe += 1 + size + 1 + 1;
     process->carry = (process->registers[reg - 1] == 0);
     return OK;

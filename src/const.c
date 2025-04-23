@@ -11,6 +11,7 @@
 char const *flags[] = {
     "-h",
     "-d",
+    "-D",
     "-n",
     "-a",
     '\0',
@@ -19,6 +20,7 @@ char const *flags[] = {
 char const *full_flags[] = {
     "--help",
     "-dump",
+    "-Dump",
     "--number",
     "--address",
     NULL,
@@ -27,6 +29,7 @@ char const *full_flags[] = {
 int (* const flag_functions[])(main_data_t *, int const, char const *[]) = {
     &flag_null, // h
     &flag_dump, // d
+    &flag_ddump, // D
     &flag_number, // n
     &flag_address, // a
 };

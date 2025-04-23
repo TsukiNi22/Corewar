@@ -7,11 +7,13 @@
 
 #include "corewar.h"
 #include "error.h"
+#include <stdbool.h>
 
 int init_option(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+    data->spe_dump = false;
     data->dump_cycle = -1;
     data->next_prog_number = -1;
     data->next_load_address = -1;

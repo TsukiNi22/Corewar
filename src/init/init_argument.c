@@ -36,7 +36,9 @@ static int flag(main_data_t *data,
         return err_system(data, KO, argv[*i], "Unrecognized option");
     if (flag_functions[index](data, argc - *i, &(argv[*i])) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    (*i)++;
+    if (my_strcmp("-D", argv[*i]) != 0
+        && my_strcmp("--Dump", argv[*i]) != 0)
+        (*i)++;
     return OK;
 }
 

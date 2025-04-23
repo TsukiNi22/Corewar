@@ -44,6 +44,7 @@ INIT :=		init/init_data.c \
 			init/flag/null.c \
 			init/flag/help.c \
 			init/flag/dump.c \
+			init/flag/ddump.c \
 			init/flag/number.c \
 			init/flag/address.c
 

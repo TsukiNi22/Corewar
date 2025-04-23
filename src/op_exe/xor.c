@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2025
 ** xor.c
 ** File description:
-** Execute the xor op commxor
+** Execute the xor op common
 */
 
 #include "op.h"
@@ -13,6 +13,7 @@ int op_xor(main_data_t *data, champion_t *champion, process_t *process)
 {
     unsigned char param = 0;
     unsigned int arg[2] = {0};
+    unsigned int read_val = 0;
     unsigned int val = 0;
     int size[2] = {0};
     int reg = 0;
@@ -36,6 +37,10 @@ int op_xor(main_data_t *data, champion_t *champion, process_t *process)
                 if (reg == 0 || reg > REG_NUMBER)
                     return OK;
                 val = process->registers[arg[i] - 1];
+            } else if (size[i] == 2) {
+                for (int k = 0; k < REG_SIZE; k++)
+                    val += data->memory[(process->index_to_exe + k + arg[i]
+                    % IDX_MOD) % MEM_SIZE] << (8 * (REG_SIZE - (1 + k)));
             } else
                 val = arg[i];
         } else {
@@ -43,6 +48,11 @@ int op_xor(main_data_t *data, champion_t *champion, process_t *process)
                 if (reg == 0 || reg > REG_NUMBER)
                     return OK;
                 val ^= process->registers[arg[i] - 1];
+            } else if (size[i] == 2) {
+                for (int k = 0; k < REG_SIZE; k++)
+                    read_val += data->memory[(process->index_to_exe + k +
+                    arg[i] % IDX_MOD) % MEM_SIZE] << (8 * (REG_SIZE - (1 + k)));
+                val ^= read_val;
             } else
                 val ^= arg[i];
         }

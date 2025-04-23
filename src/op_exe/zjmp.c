@@ -12,7 +12,7 @@
 
 int op_zjmp(main_data_t *data, champion_t *champion, process_t *process)
 {
-    unsigned int arg = 0;
+    int16_t arg = 0;
 
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);

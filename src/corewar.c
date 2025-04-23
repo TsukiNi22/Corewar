@@ -25,17 +25,28 @@ static bool is_end(bool live_status[MAX_CHAMPIONS], size_t len)
     return true;
 }
 
+static int dump(main_data_t *data)
+{
+    if (!data)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (data->spe_dump)
+        return dump_custom(data->champions, data->memory);
+    if (!data->spe_dump)
+        return dump_memory(data->memory);
+    return OK;
+}
+
 static int loop(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     while (!is_end(data->live_status, data->champions->len)) {
+        if (data->total_cycle >= data->dump_cycle)
+            return dump(data);
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (data->total_cycle >= data->dump_cycle)
-            return OK;
     }
     return OK;
 }

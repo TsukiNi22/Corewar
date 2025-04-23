@@ -19,15 +19,15 @@ static int exe_process(main_data_t *data,
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (process->cycle_delay > process->cycle_since_action)
         return OK;
-    value = data->memory[process->index_to_exe];
+    value = data->memory[process->index_to_exe % MEM_SIZE];
     if (value >= MIN_OP && value <= MAX_OP) {
         if (op_cmd[value - 1](data, champion, process) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         process->cycle_delay = op_tab[value - 1].nbr_cycles;
         process->cycle_since_action = 0;
-        process->index_to_exe = process->index_to_exe % MEM_SIZE;
     } else
         process->index_to_exe++;
+    process->index_to_exe = process->index_to_exe % MEM_SIZE;
     return OK;
 }
 
