@@ -9,6 +9,7 @@
 #include "corewar.h"
 #include "error.h"
 #include <stddef.h>
+#include <stdbool.h>
 
 static int update_champion(champion_t *champion)
 {
@@ -28,9 +29,9 @@ static int check_live(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (size_t i = 0; i < data->champions->len; i++) {
-        if (!data->live_status[i])
-            ((champion_t *) data->champions->data[i])->alive = false;
-        data->live_status[i] = false;
+        if (((champion_t *) data->champions->data[i])->alive == false)
+            data->live_status[i] = false;
+        ((champion_t *) data->champions->data[i])->alive = false;
     }
     return OK;
 }
