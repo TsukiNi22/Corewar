@@ -46,6 +46,10 @@ int update_cycle(main_data_t *data)
     }
     data->total_cycle++;
     data->actual_cycle++;
+    if (data->nbr_live >= NBR_LIVE) {
+        data->nbr_live = 0;
+        data->cycle_to_die -= CYCLE_DELTA;
+    }
     if (data->actual_cycle >= data->cycle_to_die) {
         if (check_live(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
