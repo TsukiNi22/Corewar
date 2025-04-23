@@ -47,7 +47,8 @@ INIT :=		init/init_data.c \
 			init/flag/number.c \
 			init/flag/address.c
 
-OP_CMD := 	op_exe/live.c \
+OP_CMD := 	op_exe/param.c \
+			op_exe/live.c \
 			op_exe/ld.c \
 			op_exe/st.c \
 			op_exe/add.c \

@@ -5,6 +5,7 @@
 ** Execute the live op command
 */
 
+#include "write.h"
 #include "corewar.h"
 #include "error.h"
 #include <stddef.h>
@@ -13,6 +14,7 @@
 int op_live(main_data_t *data, champion_t *champion, process_t *process)
 {
     size_t index = 0;
+    int res = OK;
 
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
@@ -25,5 +27,7 @@ int op_live(main_data_t *data, champion_t *champion, process_t *process)
     res += my_putchar(STDOUT, '(');
     res += my_putstr(STDOUT, champion->name);
     res += my_putstr(STDOUT, ")is alive.");
+    if (res != OK)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return OK;
 }
