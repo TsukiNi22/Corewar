@@ -6,6 +6,7 @@
 */
 
 #include "op.h"
+#include "write.h"
 #include "corewar.h"
 #include "error.h"
 #include <stddef.h>
@@ -36,19 +37,44 @@ static int dump(main_data_t *data)
     return OK;
 }
 
+static int who_as_won(main_data_t *data)
+{
+    champion_t *champion = NULL;
+    int alive = KO;
+    int res = OK;
+
+    if (!data)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    for (size_t i = 0; alive == KO && i < data->champions->len; i++)
+        alive = i;
+    if (alive == KO)
+        return my_putstr(STDOUT, "It's a tie, no player has won.");
+    champion = data->champions->data[alive];
+    res += my_putstr(STDOUT, "The player ");
+    res += my_putnbr(STDOUT, champion->prog_number);
+    res += my_putchar(STDOUT, '(');
+    res += my_putstr(STDOUT, champion->name);
+    res += my_putstr(STDOUT, ")has won.\n");
+    if (res != OK)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    return OK;
+}
+
 static int loop(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     while (!is_end(data->live_status, data->champions->len)) {
-        if (data->total_cycle >= data->dump_cycle)
+        if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
     }
-    return OK;
+    if (data->dump_cycle != KO)
+        return dump(data);
+    return who_as_won(data);
 }
 
 int corewar(int const argc, char const *argv[], main_data_t *data)
