@@ -77,8 +77,6 @@ static int init_champions(main_data_t *data, champion_t *champion)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (get_info(champion) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    for (int i = 0; i < REG_NUMBER; i++)
-        champion->registers[i] = 0;
     if (data->next_prog_number != -1
         && already_used(data->champions, data->next_prog_number))
         return err_system(data, KO, "champion",
@@ -91,7 +89,6 @@ static int init_champions(main_data_t *data, champion_t *champion)
     data->next_prog_number = -1;
     data->next_load_address = -1;
     champion->alive = true;
-    champion->carry = false;
     return OK;
 }
 
@@ -131,6 +128,9 @@ int init_process(champion_t *champion, int index)
     process->index_to_exe = index;
     process->cycle_delay = 0;
     process->cycle_since_action = 0;
+    process->carry = false;
+    for (int i = 0; i < REG_NUMBER; i++)
+        process->registers[i] = 0;
     if (add_array(champion->process, process) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return OK;

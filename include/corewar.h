@@ -41,6 +41,10 @@ typedef struct process_s {
     int index_to_exe;
     int cycle_delay;
     int cycle_since_action;
+
+    /* intern var */
+    bool carry;
+    reg_t registers[REG_NUMBER];
 } process_t;
 
 /* champions */
@@ -55,11 +59,7 @@ typedef struct champion_s {
 
     /* status */
     bool alive;
-    bool carry;
     array_t *process;
-
-    /* reg */
-    reg_t registers[REG_NUMBER];
 
     /* option */
     int prog_number;
@@ -103,6 +103,7 @@ int setup(main_data_t *data); // Error: KO
 int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
 int update_cycle(main_data_t *data); // Error: KO
 int exe_memory(main_data_t *data); // Error: KO
+int get_param(unsigned char value, int arg_nb); // Error: none
 
 /* op_cmd */ // Error: KO
 int op_live(main_data_t *data, champion_t *champion, process_t *process);
