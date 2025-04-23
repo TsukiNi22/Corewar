@@ -16,8 +16,14 @@ int op_live(main_data_t *data, champion_t *champion, process_t *process)
 
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    for (index = 0; data->champions->data[i] != champion; index++);
+    for (index = 0; data->champions->data[index] != champion; index++);
     data->live_status[index] = true;
     data->nbr_live++;
+    process->index_to_exe += 4 + 1;
+    res += my_putstr(STDOUT, "The player ");
+    res += my_putnbr(STDOUT, champion->prog_number);
+    res += my_putchar(STDOUT, '(');
+    res += my_putstr(STDOUT, champion->name);
+    res += my_putstr(STDOUT, ")is alive.");
     return OK;
 }
