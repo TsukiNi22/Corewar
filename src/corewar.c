@@ -72,8 +72,8 @@ static int loop(main_data_t *data)
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
     }
-    if (data->dump_cycle != KO)
-        return dump(data);
+    if (data->dump_cycle != KO && dump(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return who_as_won(data);
 }
 
