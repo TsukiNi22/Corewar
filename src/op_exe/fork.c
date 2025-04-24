@@ -10,17 +10,17 @@
 
 int op_fork(main_data_t *data, champion_t *champion, process_t *process)
 {
-    unsigned int arg = 0;
+    uint16_t arg = 0;
 
     if (!data || !champion || !process)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    if (!process->carry)
-        return OK;
     for (int i = 0; i < 2; i++)
         arg += data->memory[(process->index_to_exe + i + 1) % MEM_SIZE]
         << (8 * (2 - (1 + i)));
     if (init_process(champion, process->index_to_exe + arg % IDX_MOD) == KO)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+    ((process_t *) champion->process->data[champion->process->len
+    - 1])->cycle_delay = 800;
     process->index_to_exe += 2 + 1;
     return OK;
 }

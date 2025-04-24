@@ -103,7 +103,8 @@ typedef struct main_data_s {
 int corewar(int const argc, char const *argv[], main_data_t *data);
 int setup(main_data_t *data); // Error: KO
 int dump_memory(unsigned char memory[MEM_SIZE]); // Error: KO
-int dump_custom(array_t *champions, unsigned char memory[MEM_SIZE]);
+int dump_custom(array_t *champions, unsigned char memory[MEM_SIZE],
+    int apartenance[MEM_SIZE]);
 int update_cycle(main_data_t *data); // Error: KO
 int exe_memory(main_data_t *data); // Error: KO
 int get_param(unsigned char value, int arg_nb); // Error: none

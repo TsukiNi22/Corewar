@@ -13,6 +13,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+static int const color_champions[] = {
+    B_GREEN,
+    B_YELLOW,
+    B_BLUE,
+    B_MAGENTA,
+};
+
 static bool is_cursor(array_t *champions, int index)
 {
     champion_t *champion = NULL;
@@ -31,17 +38,33 @@ static bool is_cursor(array_t *champions, int index)
     return is;
 }
 
-int dump_custom(array_t *champions, unsigned char memory[MEM_SIZE])
+static int set_color_byte(array_t *champions, int i, int apartenance)
+{
+    size_t index = 0;
+
+    if (!champions)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (is_cursor(champions, i))
+        return back_color(STDOUT, B_RED);
+    if (apartenance == KO)
+        return OK;
+    for (index = 0; ((champion_t *) champions->data[index])->prog_number
+        != apartenance; index++);
+    return back_color(STDOUT, color_champions[index]);
+}
+
+int dump_custom(array_t *champions, unsigned char memory[MEM_SIZE],
+    int apartenance[MEM_SIZE])
 {
     int res = OK;
 
-    if (!champions || !memory)
+    if (!champions || !memory || !apartenance)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (int i = 0; i < MEM_SIZE; i++) {
         if (i != 0 && i % 64 == 0)
             res += my_putchar(STDOUT, '\n');
-        if (is_cursor(champions, i))
-            res += back_color(STDOUT, B_RED);
+        if (set_color_byte(champions, i, apartenance[i]) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (memory[i] < 16)
             res += my_putchar(STDOUT, '0');
         if (memory[i] == 0)

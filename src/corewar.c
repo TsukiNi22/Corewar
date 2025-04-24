@@ -31,7 +31,7 @@ static int dump(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (data->spe_dump)
-        return dump_custom(data->champions, data->memory);
+        return dump_custom(data->champions, data->memory, data->apartenance);
     if (!data->spe_dump)
         return dump_memory(data->memory);
     return OK;

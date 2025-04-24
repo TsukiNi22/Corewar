@@ -5,12 +5,13 @@
 ** Execute the sti op command
 */
 
+#include "macro.h"
 #include "op.h"
 #include "corewar.h"
 #include "error.h"
 
 static int set_size(main_data_t *data, process_t *process,
-    unsigned int arg[2], int size[2])
+    uint16_t arg[3], int size[2])
 {
     unsigned char param = 0;
 
@@ -18,23 +19,24 @@ static int set_size(main_data_t *data, process_t *process,
         return err_prog(PTR_ERR, KO, ERR_INFO);
     param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
     size[arg[2]] = 1 * (get_param(param, arg[2] + 1 + 1) == T_REG) +
-    2 * (get_param(param, arg[2] + 1 + 1) == T_IND) +
+    -2 * (get_param(param, arg[2] + 1 + 1) == T_IND) +
     2 * (get_param(param, arg[2] + 1 + 1) == T_DIR);
     return OK;
 }
 
+#include <stdio.h>
 static int set_var(main_data_t *data, process_t *process,
-    unsigned int arg[2], int size[2])
+    uint16_t arg[3], int size[2])
 {
-    unsigned int read_val = 0;
+    uint16_t read_val = 0;
 
     if (!data || !process || !arg || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    for (int j = 0; j < size[arg[2]]; j++)
-        arg[arg[2]] += data->memory[(process->index_to_exe + 1 +
-        size[0] * (arg[2] == 1) + j) % MEM_SIZE]
-        << (8 * (size[arg[2]] - (1 + j)));
-    if (size[arg[2]] == 2) {
+    for (int j = 0; j < ABS(size[arg[2]]); j++)
+        arg[arg[2]] += data->memory[(process->index_to_exe + 1 + 2 +
+        ABS(size[0]) * (arg[2] == 1) + j) % MEM_SIZE]
+        << (8 * (ABS(size[arg[2]]) - (1 + j)));
+    if (size[arg[2]] == -2) {
         for (int j = 0; j < REG_SIZE; j++)
             read_val = data->memory[(process->index_to_exe + arg[arg[2]]
             % IDX_MOD) % MEM_SIZE] << (8 * (REG_SIZE - (1 + j)));
@@ -43,13 +45,13 @@ static int set_var(main_data_t *data, process_t *process,
     if (size[arg[2]] == 1) {
         if (arg[arg[2]] == 0 || arg[arg[2]] > REG_NUMBER)
             return OK;
-        arg[arg[2]] = process->registers[arg[arg[2]]];
+        arg[arg[2]] = process->registers[arg[arg[2]] - 1];
     }
     return OK;
 }
 
 static int set_end(main_data_t *data, void *ptrs[2],
-    unsigned int arg[2], int size[2])
+    uint16_t arg[3], int size[2])
 {
     int reg = 0;
 
@@ -62,17 +64,18 @@ static int set_end(main_data_t *data, void *ptrs[2],
         data->memory[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
         % IDX_MOD + i) % MEM_SIZE] = (((process_t *) ptrs[1])->registers[reg - 1]
         >> (8 * (REG_SIZE - (1 + i)))) & 0xFF;
-        data->memory[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
+        data->apartenance[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
         % IDX_MOD + i) % MEM_SIZE] = ((champion_t *) ptrs[0])->prog_number;
     }
-    ((process_t *) ptrs[1])->index_to_exe += 1 + 1 + size[0] + size[1] + 1;
+    ((process_t *) ptrs[1])->index_to_exe += 1 + 1 +
+    ABS(size[0]) + ABS(size[1]) + 1;
     return OK;
 }
 
 int op_sti(main_data_t *data, champion_t *champion, process_t *process)
 {
     unsigned char param = 0;
-    unsigned int arg[3] = {0};
+    uint16_t arg[3] = {0};
     int size[2] = {0};
 
     if (!data || !champion || !process)
@@ -88,5 +91,8 @@ int op_sti(main_data_t *data, champion_t *champion, process_t *process)
         if (set_var(data, process, arg, size) == KO)
             return err_prog(PTR_ERR, KO, ERR_INFO);
     }
+    printf("size: %d %d\n", size[0], size[1]);
+    printf("arg: %d %d\n", arg[0], arg[1]);
+    printf("%s -> Reg 7: %d || Reg 1: %d\n", champion->name, process->registers[6], process->registers[0]);
     return set_end(data, (void *[2]){champion, process}, arg, size);
 }

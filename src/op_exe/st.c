@@ -10,19 +10,20 @@
 #include "error.h"
 
 static int setup_var(main_data_t *data, process_t *process,
-    int *var[2], unsigned int *arg)
+    int var[2], unsigned int *arg)
 {
     unsigned char param = 0;
 
     if (!data || !process || !var || !arg)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
-    *(var[0]) = 1 + 2 * (get_param(param, 1) == T_IND);
-    for (int i = 0; i < *(var[0]); i++)
+    var[0] = 1 * !(get_param(param, 2) == T_IND)
+    + 2 * (get_param(param, 2) == T_IND);
+    for (int i = 0; i < var[0]; i++)
         *arg += data->memory[(process->index_to_exe + 1 + 1 + i + 1)
         % MEM_SIZE]
-        << (8 * (*(var[0]) - (1 + i)));
-    *(var[1]) = data->memory[(process->index_to_exe + 1 + 1) % MEM_SIZE];
+        << (8 * (var[0] - (1 + i)));
+    var[1] = data->memory[(process->index_to_exe + 1 + 1) % MEM_SIZE];
     return OK;
 }
 
@@ -62,14 +63,14 @@ int op_st(main_data_t *data, champion_t *chp, process_t *proc)
     if ((op_tab[2].type[0] & get_param(param, 1)) == 0
         || (op_tab[2].type[1] & get_param(param, 2)) == 0)
         return OK;
-    if (setup_var(data, proc, (int *[2]){&var[1], &var[0]}, &arg) == KO)
+    if (setup_var(data, proc, var, &arg) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    if (var[0] == 0 || var[0] > REG_NUMBER ||
-        (var[1] == 1 && (arg == 0 || arg > REG_NUMBER)))
+    if ((var[1] == 0 || var[1] > REG_NUMBER) ||
+        (var[0] == 1 && (arg == 0 || arg > REG_NUMBER)))
         return OK;
-    if ((var[1] == 1 && set_register(proc, arg, var[0]) == KO) ||
-        (var[1] != 1 && s_me(data, (void *[2]){chp, proc}, arg, var[0]) == KO))
+    if ((var[0] == 1 && set_register(proc, arg, var[1]) == KO) ||
+        (var[0] != 1 && s_me(data, (void *[2]){chp, proc}, arg, var[1]) == KO))
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    proc->index_to_exe += 1 + 1 + var[1] + 1;
+    proc->index_to_exe += 1 + 1 + var[0] + 1;
     return OK;
 }
