@@ -35,38 +35,41 @@ static int set_register(process_t *process,
     return OK;
 }
 
-static int set_memory(main_data_t *data, process_t *process,
+static int s_me(main_data_t *data, void *ptrs[2],
     int arg, int reg)
 {
-    if (!data || !process)
+    if (!data || !ptrs)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    for (int i = 0; i < REG_SIZE; i++)
-        data->memory[(process->index_to_exe + arg % IDX_MOD + i)
-        % MEM_SIZE] = (process->registers[reg - 1]
+    for (int i = 0; i < REG_SIZE; i++) {
+        data->memory[(((process_t *) ptrs[1])->index_to_exe +
+        arg % IDX_MOD + i) % MEM_SIZE] = (((process_t *) ptrs[1])->registers[reg - 1]
         >> (8 * (REG_SIZE - (1 + i)))) & 0xFF;
+        data->apartenance[(((process_t *) ptrs[1])->index_to_exe +
+        arg % IDX_MOD + i) % MEM_SIZE] = ((champion_t *) ptrs[0])->prog_number;
+    }
     return OK;
 }
 
-int op_st(main_data_t *data, champion_t *champion, process_t *process)
+int op_st(main_data_t *data, champion_t *chp, process_t *proc)
 {
     unsigned char param = 0;
     unsigned int arg = 0;
     int var[2] = {0};
 
-    if (!data || !champion || !process)
+    if (!data || !chp || !proc)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
+    param = data->memory[(proc->index_to_exe + 1) % MEM_SIZE];
     if ((op_tab[2].type[0] & get_param(param, 1)) == 0
         || (op_tab[2].type[1] & get_param(param, 2)) == 0)
         return OK;
-    if (setup_var(data, process, (int *[2]){&var[1], &var[0]}, &arg) == KO)
+    if (setup_var(data, proc, (int *[2]){&var[1], &var[0]}, &arg) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (var[0] == 0 || var[0] > REG_NUMBER ||
         (var[1] == 1 && (arg == 0 || arg > REG_NUMBER)))
         return OK;
-    if ((var[1] == 1 && set_register(process, arg, var[0]) == KO) ||
-        (var[1] != 1 && set_memory(data, process, arg, var[0]) == KO))
+    if ((var[1] == 1 && set_register(proc, arg, var[0]) == KO) ||
+        (var[1] != 1 && s_me(data, (void *[2]){chp, proc}, arg, var[0]) == KO))
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    process->index_to_exe += 1 + 1 + var[1] + 1;
+    proc->index_to_exe += 1 + 1 + var[1] + 1;
     return OK;
 }

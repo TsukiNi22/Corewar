@@ -48,21 +48,24 @@ static int set_var(main_data_t *data, process_t *process,
     return OK;
 }
 
-static int set_end(main_data_t *data, process_t *process,
+static int set_end(main_data_t *data, void *ptrs[2],
     unsigned int arg[2], int size[2])
 {
     int reg = 0;
 
-    if (!data || !process || !arg || !size)
+    if (!data || !ptrs || !arg || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    reg = data->memory[(process->index_to_exe + 1 + 1) % MEM_SIZE];
+    reg = data->memory[(((process_t *) ptrs[1])->index_to_exe + 1 + 1) % MEM_SIZE];
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
-    for (int i = 0; i < REG_SIZE; i++)
-        data->memory[(process->index_to_exe + (arg[0] + arg[1])
-        % IDX_MOD + i) % MEM_SIZE] = (process->registers[reg - 1]
+    for (int i = 0; i < REG_SIZE; i++) {
+        data->memory[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
+        % IDX_MOD + i) % MEM_SIZE] = (((process_t *) ptrs[1])->registers[reg - 1]
         >> (8 * (REG_SIZE - (1 + i)))) & 0xFF;
-    process->index_to_exe += 1 + 1 + size[0] + size[1] + 1;
+        data->memory[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
+        % IDX_MOD + i) % MEM_SIZE] = ((champion_t *) ptrs[0])->prog_number;
+    }
+    ((process_t *) ptrs[1])->index_to_exe += 1 + 1 + size[0] + size[1] + 1;
     return OK;
 }
 
@@ -85,5 +88,5 @@ int op_sti(main_data_t *data, champion_t *champion, process_t *process)
         if (set_var(data, process, arg, size) == KO)
             return err_prog(PTR_ERR, KO, ERR_INFO);
     }
-    return set_end(data, process, arg, size);
+    return set_end(data, (void *[2]){champion, process}, arg, size);
 }

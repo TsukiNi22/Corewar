@@ -73,6 +73,7 @@ typedef struct main_data_s {
 
     /* memory */
     unsigned char memory[MEM_SIZE];
+    int apartenance[MEM_SIZE]; // st, sti
 
     /* champions list */
     array_t *champions;

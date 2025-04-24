@@ -46,8 +46,10 @@ static int set_prog(main_data_t *data, champion_t *champion, size_t size)
     if (size > MEM_SIZE / data->champions->len)
         return err_system(data, KO, champion->name,
         "Invalid .cor size, too big");
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++) {
         data->memory[champion->load_address + i] = buffer[i];
+        data->apartenance[champion->load_address + i] = champion->prog_number;
+    }
     close(fd);
     return OK;
 }

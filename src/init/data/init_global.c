@@ -22,8 +22,10 @@ int init_global(main_data_t *data)
     data->total_cycle = 0;
     data->actual_cycle = 0;
     data->cycle_to_die = CYCLE_TO_DIE;
-    for (int i = 0; i < MEM_SIZE; i++)
+    for (int i = 0; i < MEM_SIZE; i++) {
         data->memory[i] = 0;
+        data->apartenance[i] = KO;
+    }
     data->champions = new_array();
     if (!data->champions)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
