@@ -56,15 +56,18 @@ static int set_end(main_data_t *data, void *ptrs[2],
 
     if (!data || !ptrs || !arg || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    reg = data->memory[(((process_t *) ptrs[1])->index_to_exe + 1 + 1) % MEM_SIZE];
+    reg = data->memory[(((process_t *) ptrs[1])->index_to_exe + 1 + 1)
+    % MEM_SIZE];
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
     for (int i = 0; i < REG_SIZE; i++) {
         data->memory[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
-        % IDX_MOD + i) % MEM_SIZE] = (((process_t *) ptrs[1])->registers[reg - 1]
+        % IDX_MOD + i) % MEM_SIZE] =
+        (((process_t *) ptrs[1])->registers[reg - 1]
         >> (8 * (REG_SIZE - (1 + i)))) & 0xFF;
-        data->apartenance[(((process_t *) ptrs[1])->index_to_exe + (arg[0] + arg[1])
-        % IDX_MOD + i) % MEM_SIZE] = ((champion_t *) ptrs[0])->prog_number;
+        data->apartenance[(((process_t *) ptrs[1])->index_to_exe +
+        (arg[0] + arg[1]) % IDX_MOD + i) % MEM_SIZE] =
+        ((champion_t *) ptrs[0])->prog_number;
     }
     ((process_t *) ptrs[1])->index_to_exe += 1 + 1 +
     ABS(size[0]) + ABS(size[1]) + 1;

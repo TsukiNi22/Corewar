@@ -43,7 +43,8 @@ static int s_me(main_data_t *data, void *ptrs[2],
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (int i = 0; i < REG_SIZE; i++) {
         data->memory[(((process_t *) ptrs[1])->index_to_exe +
-        arg % IDX_MOD + i) % MEM_SIZE] = (((process_t *) ptrs[1])->registers[reg - 1]
+        arg % IDX_MOD + i) % MEM_SIZE] =
+        (((process_t *) ptrs[1])->registers[reg - 1]
         >> (8 * (REG_SIZE - (1 + i)))) & 0xFF;
         data->apartenance[(((process_t *) ptrs[1])->index_to_exe +
         arg % IDX_MOD + i) % MEM_SIZE] = ((champion_t *) ptrs[0])->prog_number;

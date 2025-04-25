@@ -61,8 +61,8 @@ static int set_end(main_data_t *data, process_t *process,
 
     if (!data || !process || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    reg = data->memory[(process->index_to_exe + 1 + ABS(size[0]) + ABS(size[1]) + 1)
-    % MEM_SIZE];
+    reg = data->memory[(process->index_to_exe + 1 + ABS(size[0])
+    + ABS(size[1]) + 1) % MEM_SIZE];
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
     process->registers[reg - 1] = arg[3];
