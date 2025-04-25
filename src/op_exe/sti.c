@@ -24,7 +24,6 @@ static int set_size(main_data_t *data, process_t *process,
     return OK;
 }
 
-#include <stdio.h>
 static int set_var(main_data_t *data, process_t *process,
     uint16_t arg[3], int size[2])
 {
@@ -91,8 +90,5 @@ int op_sti(main_data_t *data, champion_t *champion, process_t *process)
         if (set_var(data, process, arg, size) == KO)
             return err_prog(PTR_ERR, KO, ERR_INFO);
     }
-    printf("size: %d %d\n", size[0], size[1]);
-    printf("arg: %d %d\n", arg[0], arg[1]);
-    printf("%s -> Reg 7: %d || Reg 1: %d\n", champion->name, process->registers[6], process->registers[0]);
     return set_end(data, (void *[2]){champion, process}, arg, size);
 }

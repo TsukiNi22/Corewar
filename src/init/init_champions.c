@@ -131,6 +131,7 @@ int init_process(champion_t *champion, int index)
     process->carry = false;
     for (int i = 0; i < REG_NUMBER; i++)
         process->registers[i] = 0;
+    process->registers[0] = champion->prog_number;
     if (add_array(champion->process, process) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return OK;

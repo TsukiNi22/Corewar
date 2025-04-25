@@ -66,6 +66,8 @@ static int setup_memory(main_data_t *data)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         ((process_t *) champion->process->data[0])->index_to_exe =
         champion->load_address;
+        ((process_t *) champion->process->data[0])->registers[0] =
+        champion->prog_number;
     }
     return OK;
 }

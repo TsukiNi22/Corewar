@@ -5,12 +5,13 @@
 ** Execute the ldi op commldi
 */
 
+#include "macro.h"
 #include "op.h"
 #include "corewar.h"
 #include "error.h"
 
 static int set_var(main_data_t *data, process_t *process,
-    unsigned int arg[4], int size[2])
+    uint16_t arg[4], int size[2])
 {
     unsigned char param = 0;
 
@@ -19,17 +20,18 @@ static int set_var(main_data_t *data, process_t *process,
     param = data->memory[(process->index_to_exe + 1) % MEM_SIZE];
     for (int i = 0; i < 2; i++) {
         size[i] = 1 * (get_param(param, i + 1) == T_REG) +
-        2 * (get_param(param, i + 1) == T_IND) +
-        4 * (get_param(param, i + 1) == T_DIR);
-        for (int j = 0; j < size[i]; j++)
+        -2 * (get_param(param, i + 1) == T_IND) +
+        2 * (get_param(param, i + 1) == T_DIR);
+        for (int j = 0; j < ABS(size[i]); j++)
             arg[i] += data->memory[(process->index_to_exe + 1 +
-            size[0] * (i == 1) + j) % MEM_SIZE] << (8 * (size[i] - (1 + j)));
+            size[0] * (i == 1) + j) % MEM_SIZE] << (8 * (ABS(size[i])
+            - (1 + j)));
     }
     return OK;
 }
 
 static int set_memmory(main_data_t *data, process_t *process,
-    unsigned int arg[4], int size[2])
+    uint16_t arg[4], int size[2])
 {
     if (!data || !process || !arg || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
@@ -43,7 +45,7 @@ static int set_memmory(main_data_t *data, process_t *process,
             return OK;
         arg[2] += process->registers[arg[0] - 1];
     }
-    if (size[0] == 4)
+    if (size[0] == 2)
         arg[2] += arg[0];
     arg[2] += arg[1];
     for (int j = 0; j < REG_SIZE; j++)
@@ -53,18 +55,18 @@ static int set_memmory(main_data_t *data, process_t *process,
 }
 
 static int set_end(main_data_t *data, process_t *process,
-    unsigned int arg[4], int size[2])
+    uint16_t arg[4], int size[2])
 {
     int reg = 0;
 
     if (!data || !process || !size)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    reg = data->memory[(process->index_to_exe + 1 + size[0] + size[1] + 1)
+    reg = data->memory[(process->index_to_exe + 1 + ABS(size[0]) + ABS(size[1]) + 1)
     % MEM_SIZE];
     if (reg == 0 || reg > REG_NUMBER)
         return OK;
     process->registers[reg - 1] = arg[3];
-    process->index_to_exe += 1 + size[0] + size[1] + 1 + 1;
+    process->index_to_exe += 1 + ABS(size[0]) + ABS(size[1]) + 1 + 1;
     process->carry = (process->registers[reg - 1] == 0);
     return OK;
 }
@@ -72,7 +74,7 @@ static int set_end(main_data_t *data, process_t *process,
 int op_ldi(main_data_t *data, champion_t *champion, process_t *process)
 {
     unsigned char param = 0;
-    unsigned int arg[4] = {0};
+    uint16_t arg[4] = {0};
     int size[2] = {0};
 
     if (!data || !champion || !process)

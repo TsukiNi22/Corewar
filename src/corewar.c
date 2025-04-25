@@ -46,9 +46,9 @@ static int who_as_won(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (size_t i = 0; alive == KO && i < data->champions->len; i++)
-        alive = i;
+        alive = i - (i + 1) * !data->live_status[i];
     if (alive == KO)
-        return my_putstr(STDOUT, "It's a tie, no player has won.");
+        return my_putstr(STDOUT, "It's a tie, no player has won.\n");
     champion = data->champions->data[alive];
     res += my_putstr(STDOUT, "The player ");
     res += my_putnbr(STDOUT, champion->prog_number);
