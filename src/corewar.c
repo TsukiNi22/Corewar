@@ -26,12 +26,42 @@ static bool is_end(bool live_status[MAX_CHAMPIONS], size_t len)
     return true;
 }
 
-static int dump(main_data_t *data)
+static int put_info(main_data_t *data)
 {
+    champion_t *champion = NULL;
+    int res = OK;
+
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    if (data->spe_dump)
-        return dump_custom(data->champions, data->memory, data->apartenance);
+    for (size_t i = 0; i < data->champions->len; i++) {
+        champion = data->champions->data[i];
+        res += my_putstr(STDOUT, "Process number of n°");
+        res += my_putnbr(STDOUT, champion->prog_number);
+        res += my_putstr(STDOUT, ": ");
+        res += my_putnbr(STDOUT, champion->process->len);
+        res += my_putchar(STDOUT, '\n');
+    }
+    res += my_putstr(STDOUT, "Number of cycle: ");
+    res += my_putnbr(STDOUT, data->total_cycle);
+    res += my_putchar(STDOUT, '\n');
+    res += my_putstr(STDOUT, "Deat cycle: ");
+    res += my_putnbr(STDOUT, data->cycle_to_die);
+    res += my_putchar(STDOUT, '\n');
+    return KO * (res != OK);
+}
+
+static int dump(main_data_t *data)
+{
+    int res = OK;
+
+    if (!data)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (data->spe_dump) {
+        res += dump_custom(data->champions, data->memory, data->apartenance);
+        res += put_info(data);
+        if (res != OK)
+            return err_prog(PTR_ERR, KO, ERR_INFO);
+    }
     if (!data->spe_dump)
         return dump_memory(data->memory);
     return OK;
