@@ -37,7 +37,9 @@ static int flag(main_data_t *data,
     if (flag_functions[index](data, argc - *i, &(argv[*i])) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (my_strcmp("-D", argv[*i]) != 0
-        && my_strcmp("--Dump", argv[*i]) != 0)
+        && my_strcmp("--Dump", argv[*i]) != 0
+        && my_strcmp("-ng", argv[*i]) != 0
+        && my_strcmp("--no-graphics", argv[*i]) != 0)
         (*i)++;
     return OK;
 }
