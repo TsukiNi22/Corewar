@@ -86,6 +86,7 @@ typedef struct main_data_s {
     int cycle_to_die;
 
     /* option */
+    bool no_graphics;
     bool spe_dump;
     int dump_cycle;
     int next_prog_number;
@@ -147,6 +148,8 @@ int flag_ddump(main_data_t *data,
 int flag_number(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 int flag_address(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_graphics(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 
 /* exit */
