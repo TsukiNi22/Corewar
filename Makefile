@@ -12,12 +12,12 @@ TEST_TARGET := unit_tests
 BUILD_DIR := .obj
 
 W := -W -Wall -Wextra -Wpedantic -Wunused-parameter -Wshadow
-W += -Wuninitialized -Wmaybe-uninitialized -lncurses
+W += -Wuninitialized -Wmaybe-uninitialized
 
 DEBUG := -g -ggdb3
 
 CPPFLAGS := -I ./include/
-LDFLAGS := -L ./lib/ -lmy
+LDFLAGS := -L ./lib/ -lmy -lncurses
 CFLAGS := $(W)
 
 ifeq ($(d), t)
