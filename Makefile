@@ -12,7 +12,7 @@ TEST_TARGET := unit_tests
 BUILD_DIR := .obj
 
 W := -W -Wall -Wextra -Wpedantic -Wunused-parameter -Wshadow
-W += -Wuninitialized -Wmaybe-uninitialized
+W += -Wuninitialized -Wmaybe-uninitialized -lncurses
 
 DEBUG := -g -ggdb3
 
@@ -67,7 +67,9 @@ OP_CMD := 	op_exe/param.c \
 			op_exe/lfork.c \
 			op_exe/aff.c
 
-FILES := $(GLOBAL) $(INIT) $(OP_CMD)
+GRAPHICS	:=	graphics_while.c
+
+FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(GRAPHICS)
 SRC := $(addprefix src/, $(FILES))
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 

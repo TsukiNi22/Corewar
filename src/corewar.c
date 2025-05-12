@@ -11,6 +11,7 @@
 #include "error.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include <ncurses.h>
 
 static bool is_end(bool live_status[MAX_CHAMPIONS], size_t len)
 {
@@ -94,6 +95,8 @@ static int loop(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
+    noecho();
+    nodelay(stdscr, TRUE);
     while (!is_end(data->live_status, data->champions->len)) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
@@ -101,6 +104,10 @@ static int loop(main_data_t *data)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (while_cond(data) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (data->getch == 'q' || data->getch == 'Q')
+            break;
     }
     if (data->dump_cycle != KO && dump(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
@@ -118,6 +125,8 @@ int corewar(int const argc, char const *argv[], main_data_t *data)
     if (data->help)
         return OK;
     if (setup(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    if (display_graphics(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (loop(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

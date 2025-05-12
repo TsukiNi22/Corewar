@@ -85,6 +85,9 @@ typedef struct main_data_s {
     int actual_cycle;
     int cycle_to_die;
 
+    /*graphics*/
+    int getch;
+
     /* option */
     bool no_graphics;
     bool spe_dump;
@@ -166,5 +169,10 @@ extern int (* const flag_functions[])(main_data_t *,
 
 /* op command */
 extern int (* const op_cmd[])(main_data_t *, champion_t *, process_t *);
+
+/*graphics*/
+int display_graphics(main_data_t *data);
+int while_cond(main_data_t *data);
+
 
 #endif /* COREWAR_H */
