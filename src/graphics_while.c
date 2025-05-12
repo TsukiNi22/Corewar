@@ -26,6 +26,8 @@ int while_cond(main_data_t *data)
 
 int display_graphics(main_data_t *data)
 {
+    if (!data)
+        return KO;
     initscr();
-    return EXIT_SUCCESS;
+    return OK;
 }
