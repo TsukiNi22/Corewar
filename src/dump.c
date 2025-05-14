@@ -13,13 +13,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-static int const color_champions[] = {
-    B_GREEN,
-    B_YELLOW,
-    B_BLUE,
-    B_MAGENTA,
-};
-
 static bool is_cursor(array_t *champions, int index)
 {
     champion_t *champion = NULL;

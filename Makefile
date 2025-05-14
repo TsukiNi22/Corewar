@@ -115,6 +115,12 @@ tests_run:    unit_tests
 	@./$(TEST_TARGET)
 	@gcovr . --exclude tests/ --exclude lib/
 
+set_font:
+	@echo "Setup the font in \'/usr/share/fonts/liberation-mono/\'..."
+	@sudo mkdir -p /usr/share/fonts/liberation-mono
+	@sudo cp font/LiberationMono-Regular.ttf \
+	/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf
+
 sys_cmd: $(TARGET)
 	@echo "Copying the target in \'/usr/local/bin\'..."
 	@sudo cp $(TARGET) /usr/local/bin/$(TARGET)
@@ -140,5 +146,5 @@ get_unknow_files:
                 rm -f missing_files.txt; \
         fi
 
-.PHONY: all lib clean fclean re tests_run sys_cmd \
+.PHONY: all lib clean fclean re tests_run sys_cmd set_font \
 	get_unregistered_files get_unknow_files

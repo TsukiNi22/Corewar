@@ -5,8 +5,16 @@
 ** Global const
 */
 
+#include "write.h"
 #include "corewar.h"
 #include <stddef.h>
+
+int const color_champions[] = {
+    B_GREEN,
+    B_YELLOW,
+    B_BLUE,
+    B_MAGENTA,
+};
 
 char const *flags[] = {
     "-h",

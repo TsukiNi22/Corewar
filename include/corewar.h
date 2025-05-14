@@ -23,8 +23,11 @@
     //----------------------------------------------------------------//
     /* DEFINE */
 
-    /* csfml title */
+    /* csfml */
     #define TITLE "Corewar の Graphics"
+    #define FONT "/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf"
+    #define WIDTH 1600
+    #define HEIGHT 950
 
 //----------------------------------------------------------------//
 /* TYPEDEF */
@@ -102,6 +105,9 @@ typedef struct main_data_s {
 
     /* option csfml */
     sfRenderWindow *window;
+    sfFont *font;
+    sfRectangleShape *champion_box[4];
+    sfRectangleShape *memory_box;
 
     /* ouput */
     bool help;
@@ -177,6 +183,7 @@ int free_data(main_data_t *data); // Error: EPITECH_ERR
 /* GLOBAL_CONST */
 
 /* flag */
+extern int const color_champions[];
 extern char const *flags[];
 extern char const *full_flags[];
 extern int (* const flag_functions[])(main_data_t *,
