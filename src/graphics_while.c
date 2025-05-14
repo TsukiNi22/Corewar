@@ -13,19 +13,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdio.h>
-
-/*
-** EPITECH PROJECT, 2025
-** dump.c
-** File description:
-** Sho the memory content
-*/
-
 #include "op.h"
 #include "array.h"
-#include "write.h"
-#include "corewar.h"
-#include "error.h"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -38,15 +27,12 @@ static int const color_champions[] = {
 
 int my_back_color(back_color_t back)
 {
-    int res = OK;
+    int bg = back - 40;
+    int pair_id = 10 + bg;
 
-    printw("\x1B");
-    printw("[");
-    printw("%d", back);
-    printw("m");
-    if (res != OK)
-        return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    return OK;
+    init_pair(pair_id, COLOR_WHITE, bg);
+    attron(COLOR_PAIR(pair_id));
+    return pair_id;
 }
 
 static bool is_cursor(array_t *champions, int index)
@@ -76,9 +62,9 @@ static int set_color_byte(array_t *champions, int i, int apartenance)
     if (is_cursor(champions, i))
         return my_back_color(B_RED);
     if (apartenance == KO)
-        return OK;
-    for (index = 0; ((champion_t *) champions->data[index])->prog_number
-        != apartenance; index++);
+        return -1;
+    for (index = 0; ((champion_t *)
+    champions->data[index])->prog_number != apartenance; index++);
     return my_back_color(color_champions[index]);
 }
 
@@ -86,20 +72,19 @@ int dump_custom_graphics(array_t *champions, unsigned char memory[MEM_SIZE],
     int apartenance[MEM_SIZE])
 {
     int res = OK;
+    int pair_id = 0;
 
     if (!champions || !memory || !apartenance)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (int i = 0; i < MEM_SIZE; i++) {
         if (i != 0 && i % 64 == 0)
             printw("\n");
-        if (set_color_byte(champions, i, apartenance[i]) == KO)
+        pair_id = set_color_byte(champions, i, apartenance[i]);
+        if (pair_id == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (memory[i] < 16)
-            printw("0");
-        if (memory[i] == 0)
-            printw("0");
-        printw("%d", memory[i]);
-        printw(" ");
+        printw("%02x ", memory[i]);
+        if (pair_id >= 0)
+            attroff(COLOR_PAIR(pair_id));
     }
     printw("\n");
     return KO * (res != OK);
@@ -121,5 +106,7 @@ int display_graphics(main_data_t *data)
     if (!data)
         return KO;
     initscr();
+    start_color();
+    use_default_colors();
     return OK;
 }
