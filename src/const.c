@@ -24,6 +24,7 @@ char const *flags[] = {
     "-a",
     "-ng",
     "-c",
+    "-s",
     '\0',
 };
 
@@ -35,6 +36,7 @@ char const *full_flags[] = {
     "--address",
     "--no-graphics",
     "-csfml",
+    "--speed",
     NULL,
 };
 
@@ -46,6 +48,7 @@ int (* const flag_functions[])(main_data_t *, int const, char const *[]) = {
     &flag_address, // a
     &flag_graphics, // ng
     &flag_csfml, // c
+    &flag_speed, // s
 };
 
 

@@ -51,7 +51,8 @@ INIT :=		init/init_data.c \
 			init/flag/number.c \
 			init/flag/address.c \
 			init/flag/graphics.c \
-			init/flag/csfml.c
+			init/flag/csfml.c \
+			init/flag/speed.c
 
 OP_CMD := 	op_exe/param.c \
 			op_exe/live.c \

@@ -122,7 +122,9 @@ static int loop(main_data_t *data)
         && (!data->csfml || sfRenderWindow_isOpen(data->window))) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
-        if (!data->no_graphics && data->csfml && render_csfml(data) == KO)
+        if (!data->no_graphics && data->csfml
+            && data->total_cycle % data->speed == 0
+            && render_csfml(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);

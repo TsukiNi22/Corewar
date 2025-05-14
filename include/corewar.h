@@ -100,6 +100,7 @@ typedef struct main_data_s {
     bool no_graphics;
     bool csfml;
     bool spe_dump;
+    unsigned int speed;
     int dump_cycle;
     int next_prog_number;
     int next_load_address;
@@ -178,6 +179,8 @@ int flag_address(main_data_t *data,
 int flag_graphics(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 int flag_csfml(main_data_t *data,
+    int const argc, char const *argv[]); // Error: KO
+int flag_speed(main_data_t *data,
     int const argc, char const *argv[]); // Error: KO
 
 /* exit */
