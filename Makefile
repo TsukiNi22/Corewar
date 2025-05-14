@@ -36,7 +36,6 @@ GLOBAL :=	main.c \
 			update_cycle.c \
 			exe_memory.c \
 			dump.c \
-			render_csfml.c \
 			free_data.c
 
 INIT :=		init/init_data.c \
@@ -72,7 +71,10 @@ OP_CMD := 	op_exe/param.c \
 			op_exe/lfork.c \
 			op_exe/aff.c
 
-FILES := $(GLOBAL) $(INIT) $(OP_CMD)
+RENDER := 	render/render_csfml.c \
+			render/render_memory.c
+
+FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(RENDER)
 SRC := $(addprefix src/, $(FILES))
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 
