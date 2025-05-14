@@ -104,8 +104,9 @@ int while_cond(main_data_t *data)
         refresh();
         ch = getch();
         if (ch == 'q' || ch == 'Q')
-            break;
-        usleep(50000);
+            endwin();
+        usleep(5000);
+        break;
     }
     endwin();
     return OK;
