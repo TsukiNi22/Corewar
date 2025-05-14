@@ -95,6 +95,7 @@ int while_cond(main_data_t *data)
     if (!data)
         return KO;
     clear();
+    printw("%d\n", data->actual_cycle);
     if (data->actual_cycle == 0)
         data->alive++;
     dump_custom_graphics(data->champions, data->memory, data->apartenance);
