@@ -28,7 +28,8 @@ static int check_env_display(main_data_t *data, char const *env[])
     return OK;
 }
 
-static sfColor lighten_color(sfColor c, float f) {
+static sfColor lighten_color(sfColor c, float f)
+{
     return sfColor_fromRGB(
         c.r + (255 - c.r) * f,
         c.g + (255 - c.g) * f,
@@ -51,7 +52,7 @@ static sfColor get_color(int i, bool champion)
 
 static int init_champion_box(main_data_t *data)
 {
-   if (!data)
+    if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     for (size_t i = 0; i < 4; i++) {
         data->champion_box[i] = sfRectangleShape_create();
@@ -69,7 +70,7 @@ static int init_champion_box(main_data_t *data)
 
 int init_memory_box(main_data_t *data)
 {
-   if (!data)
+    if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     data->memory_box = sfRectangleShape_create();
     if (!data->memory_box)
