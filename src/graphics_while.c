@@ -98,7 +98,7 @@ int while_cond(main_data_t *data)
     dump_custom_graphics(data->champions, data->memory, data->apartenance);
     refresh();
     data->getch = getch();
-    usleep(500);
+    usleep(5000);
     return OK;
 }
 
@@ -111,5 +111,5 @@ int display_graphics(main_data_t *data)
     start_color();
     use_default_colors();
     keypad(stdscr, TRUE);
-    return while_cond(data);
+    return OK;
 }
