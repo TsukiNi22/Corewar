@@ -67,6 +67,30 @@ static int dump(main_data_t *data)
     return OK;
 }
 
+static bool is_not_end(main_data_t *data)
+{
+    int alive = 0;
+
+    if (!data)
+        return err_prog(PTR_ERR, true, ERR_INFO);
+    for (size_t i = 0; i < data->champions->len; i++)
+        alive += data->live_status[i];
+    if (alive <= 1)
+        return false;
+    return true;
+}
+
+static bool is_tie(main_data_t *data, int *alive)
+{
+    if (!data || !alive)
+        return err_prog(PTR_ERR, true, ERR_INFO);
+    for (size_t i = 0; *alive == KO && i < data->champions->len; i++)
+        *alive = i - (i + 1) * !data->live_status[i];
+    if (*alive == KO)
+        return true;
+    return false;
+}
+
 static int who_as_won(main_data_t *data)
 {
     champion_t *champion = NULL;
@@ -75,9 +99,9 @@ static int who_as_won(main_data_t *data)
 
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    for (size_t i = 0; alive == KO && i < data->champions->len; i++)
-        alive = i - (i + 1) * !data->live_status[i];
-    if (alive == KO)
+    if (is_not_end(data))
+        return my_putstr(STDOUT, "Stoped before end, no player has won.\n");
+    if (is_tie(data, &alive))
         return my_putstr(STDOUT, "It's a tie, no player has won.\n");
     champion = data->champions->data[alive];
     res += my_putstr(STDOUT, "The player ");

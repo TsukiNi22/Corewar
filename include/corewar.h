@@ -156,6 +156,7 @@ int init_process(champion_t *champion, int index); // Error: KO
 
 /* option */
 int render_csfml(main_data_t *data); // Error: KO
+int render_box(main_data_t *data); // Error: KO
 int render_memory(main_data_t *data); // Error: KO
 
 /* init_argument */
