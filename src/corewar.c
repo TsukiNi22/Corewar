@@ -109,6 +109,7 @@ static int loop(main_data_t *data)
         if (data->getch == 'q' || data->getch == 'Q')
             break;
     }
+    endwin();
     if (data->dump_cycle != KO && dump(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return who_as_won(data);

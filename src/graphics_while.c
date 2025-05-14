@@ -92,23 +92,13 @@ int dump_custom_graphics(array_t *champions,
 
 int while_cond(main_data_t *data)
 {
-    int ch = 0;
-
     if (!data)
         return KO;
-    noecho();
-    nodelay(stdscr, TRUE);
-    while (1) {
-        clear();
-        dump_custom_graphics(data->champions, data->memory, data->apartenance);
-        refresh();
-        ch = getch();
-        if (ch == 'q' || ch == 'Q')
-            endwin();
-        usleep(5000);
-        break;
-    }
-    endwin();
+    clear();
+    dump_custom_graphics(data->champions, data->memory, data->apartenance);
+    refresh();
+    data->getch = getch();
+    usleep(500);
     return OK;
 }
 
@@ -120,5 +110,6 @@ int display_graphics(main_data_t *data)
     curs_set(FALSE);
     start_color();
     use_default_colors();
+    keypad(stdscr, TRUE);
     return while_cond(data);
 }
