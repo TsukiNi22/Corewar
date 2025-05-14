@@ -6,6 +6,8 @@
 */
 
 #include "corewar.h"
+#include "array.h"
+#include "op.h"
 #include "error.h"
 #include "write.h"
 #include <stdlib.h>
@@ -13,12 +15,10 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "op.h"
-#include "array.h"
 #include <stddef.h>
 #include <stdbool.h>
 
-static int const color_champions[] = {
+static const int color_champions[] = {
     B_GREEN,
     B_YELLOW,
     B_BLUE,
@@ -42,11 +42,11 @@ static bool is_cursor(array_t *champions, int index)
     bool is = false;
 
     if (!champions)
-        return err_prog(PTR_ERR, KO, ERR_INFO);
+        return false;
     for (size_t i = 0; !is && i < champions->len; i++) {
         champion = (champion_t *) champions->data[i];
         for (size_t j = 0; !is && j < champion->process->len; j++) {
-            process = champion->process->data[j];
+            process = (process_t *) champion->process->data[j];
             is = (process->index_to_exe == index);
         }
     }
@@ -58,46 +58,56 @@ static int set_color_byte(array_t *champions, int i, int apartenance)
     size_t index = 0;
 
     if (!champions)
-        return err_prog(PTR_ERR, KO, ERR_INFO);
+        return -1;
     if (is_cursor(champions, i))
         return my_back_color(B_RED);
     if (apartenance == KO)
         return -1;
-    for (index = 0; ((champion_t *)
-    champions->data[index])->prog_number != apartenance; index++);
-    return my_back_color(color_champions[index]);
+    for (index = 0; index < champions->len &&
+        ((champion_t *)champions->data[index])->prog_number
+        != apartenance; index++);
+    if (index >= champions->len)
+        return -1;
+    return my_back_color(color_champions[index % 4]);
 }
 
-int dump_custom_graphics(array_t *champions, unsigned char memory[MEM_SIZE],
-    int apartenance[MEM_SIZE])
+int dump_custom_graphics(array_t *champions,
+    unsigned char memory[MEM_SIZE], int apartenance[MEM_SIZE])
 {
-    int res = OK;
     int pair_id = 0;
 
     if (!champions || !memory || !apartenance)
-        return err_prog(PTR_ERR, KO, ERR_INFO);
+        return KO;
     for (int i = 0; i < MEM_SIZE; i++) {
         if (i != 0 && i % 64 == 0)
             printw("\n");
         pair_id = set_color_byte(champions, i, apartenance[i]);
-        if (pair_id == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
         printw("%02x ", memory[i]);
         if (pair_id >= 0)
             attroff(COLOR_PAIR(pair_id));
     }
     printw("\n");
-    return KO * (res != OK);
+    return OK;
 }
 
 int while_cond(main_data_t *data)
 {
+    int ch = 0;
+
     if (!data)
         return KO;
-    clear();
-    dump_custom_graphics(data->champions, data->memory, data->apartenance);
-    refresh();
-    data->getch = getch();
+    noecho();
+    nodelay(stdscr, TRUE);
+    while (1) {
+        clear();
+        dump_custom_graphics(data->champions, data->memory, data->apartenance);
+        refresh();
+        ch = getch();
+        if (ch == 'q' || ch == 'Q')
+            break;
+        usleep(50000);
+    }
+    endwin();
     return OK;
 }
 
@@ -106,7 +116,8 @@ int display_graphics(main_data_t *data)
     if (!data)
         return KO;
     initscr();
+    curs_set(FALSE);
     start_color();
     use_default_colors();
-    return OK;
+    return while_cond(data);
 }
