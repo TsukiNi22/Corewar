@@ -10,7 +10,7 @@
 #include "error.h"
 #include <stdbool.h>
 
-int main(int const argc, char const *argv[])
+int main(int const argc, char const *argv[], char const *env[])
 {
     main_data_t data = {0};
     int res = 0;
@@ -20,7 +20,7 @@ int main(int const argc, char const *argv[])
     data.exe_name = argv[0];
     data.help = false;
     data.err_sys = false;
-    res = corewar(argc, argv, &data);
+    res = corewar(argc, argv, env, &data);
     if (res == KO || res == FATAL_ERR) {
         if (res != FATAL_ERR)
             free_data(&data);

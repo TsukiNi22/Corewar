@@ -13,11 +13,13 @@ BUILD_DIR := .obj
 
 W := -W -Wall -Wextra -Wpedantic -Wunused-parameter -Wshadow
 W += -Wuninitialized -Wmaybe-uninitialized
+CSFML := -lcsfml-graphics -lcsfml-window -lcsfml-system
 
 DEBUG := -g -ggdb3
 
 CPPFLAGS := -I ./include/
 LDFLAGS := -L ./lib/ -lmy
+LDFLAGS += $(CSFML)
 CFLAGS := $(W)
 
 ifeq ($(d), t)
@@ -34,6 +36,7 @@ GLOBAL :=	main.c \
 			update_cycle.c \
 			exe_memory.c \
 			dump.c \
+			render_csfml.c \
 			free_data.c
 
 INIT :=		init/init_data.c \
@@ -41,13 +44,15 @@ INIT :=		init/init_data.c \
 			init/data/init_option.c \
 			init/init_argument.c \
 			init/init_champions.c \
+			init/init_csfml.c \
 			init/flag/null.c \
 			init/flag/help.c \
 			init/flag/dump.c \
 			init/flag/ddump.c \
 			init/flag/number.c \
 			init/flag/address.c \
-			init/flag/graphics.c
+			init/flag/graphics.c \
+			init/flag/csfml.c
 
 OP_CMD := 	op_exe/param.c \
 			op_exe/live.c \

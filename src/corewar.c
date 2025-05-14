@@ -94,9 +94,12 @@ static int loop(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    while (!is_end(data->live_status, data->champions->len)) {
+    while (!is_end(data->live_status, data->champions->len)
+        && (!data->csfml || sfRenderWindow_isOpen(data->window))) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
+        if (!data->no_graphics && data->csfml && render_csfml(data) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
@@ -107,9 +110,10 @@ static int loop(main_data_t *data)
     return who_as_won(data);
 }
 
-int corewar(int const argc, char const *argv[], main_data_t *data)
+int corewar(int const argc, char const *argv[], char const *env[],
+    main_data_t *data)
 {
-    if (!data || !argv)
+    if (!data || !argv || !env)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (init_data(data) == KO)
         return err_custom("Data initialisation error", FATAL_ERR, ERR_INFO);
@@ -118,6 +122,8 @@ int corewar(int const argc, char const *argv[], main_data_t *data)
     if (data->help)
         return OK;
     if (setup(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    if (!data->no_graphics && data->csfml && init_csfml(data, env) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (loop(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

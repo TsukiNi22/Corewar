@@ -9,6 +9,7 @@
 #include "corewar.h"
 #include "error.h"
 #include <stdlib.h>
+#include <SFML/Graphics.h>
 
 static int free_ptr(void *ptr)
 {
@@ -37,5 +38,7 @@ int free_data(main_data_t *data)
     if (data->champions
         && delete_array(&data->champions, &free_champions) == KO)
         return err_prog(UNDEF_ERR, EPITECH_ERR, ERR_INFO);
+    if (data->window)
+        sfRenderWindow_destroy(data->window);
     return OK;
 }
