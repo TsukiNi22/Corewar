@@ -95,10 +95,12 @@ int while_cond(main_data_t *data)
     if (!data)
         return KO;
     clear();
+    if (data->actual_cycle == 0)
+        data->alive++;
     dump_custom_graphics(data->champions, data->memory, data->apartenance);
     refresh();
     data->getch = getch();
-    usleep(5000);
+    usleep(1000);
     return OK;
 }
 
@@ -106,6 +108,7 @@ int display_graphics(main_data_t *data)
 {
     if (!data)
         return KO;
+    data->alive = 0;
     initscr();
     curs_set(FALSE);
     start_color();

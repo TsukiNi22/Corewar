@@ -87,6 +87,7 @@ typedef struct main_data_s {
 
     /*graphics*/
     int getch;
+    int alive;
 
     /* option */
     bool no_graphics;

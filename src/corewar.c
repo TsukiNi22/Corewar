@@ -106,7 +106,7 @@ static int loop(main_data_t *data)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (while_cond(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (data->getch == 'q' || data->getch == 'Q')
+        if (data->getch == 'q' || data->getch == 'Q' || data->alive == 1)
             break;
     }
     endwin();
