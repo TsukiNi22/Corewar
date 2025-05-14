@@ -73,6 +73,7 @@ OP_CMD := 	op_exe/param.c \
 
 RENDER := 	render/render_csfml.c \
 			render/render_box.c \
+			render/render_info.c \
 			render/render_memory.c
 
 FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(RENDER)

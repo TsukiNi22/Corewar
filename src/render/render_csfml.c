@@ -24,6 +24,8 @@ int render_csfml(main_data_t *data)
     sfRenderWindow_clear(data->window, sfBlack);
     if (render_box(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
+    if (render_info(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (render_memory(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     sfRenderWindow_display(data->window);
