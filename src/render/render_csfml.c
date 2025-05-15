@@ -9,7 +9,7 @@
 #include "error.h"
 #include <SFML/Graphics.h>
 
-int render_csfml(main_data_t *data)
+static int event_handler(main_data_t *data)
 {
     sfEvent event = {0};
 
@@ -20,7 +20,18 @@ int render_csfml(main_data_t *data)
             sfRenderWindow_close(data->window);
         if (event.type == sfEvtKeyPressed && event.key.code == 16)
             sfRenderWindow_close(data->window);
+        if (event.type == sfEvtKeyPressed && event.key.code == 57)
+            data->paused = !data->paused;
     }
+    return OK;
+}
+
+int render_csfml(main_data_t *data)
+{
+    if (!data)
+        return err_prog(PTR_ERR, KO, ERR_INFO);
+    if (event_handler(data) == KO)
+        return err_prog(UNDEF_ERR, KO, ERR_INFO);
     sfRenderWindow_clear(data->window, sfBlack);
     if (render_box(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

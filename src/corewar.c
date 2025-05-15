@@ -126,6 +126,8 @@ static int loop(main_data_t *data)
             && data->total_cycle % data->speed == 0
             && render_csfml(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (data->paused)
+            continue;
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)

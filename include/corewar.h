@@ -96,6 +96,9 @@ typedef struct main_data_s {
     int actual_cycle;
     int cycle_to_die;
 
+    /* csfml */
+    bool paused;
+
     /* option */
     bool no_graphics;
     bool csfml;

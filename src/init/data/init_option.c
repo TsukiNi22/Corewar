@@ -17,6 +17,7 @@ int init_option(main_data_t *data)
     data->no_graphics = false;
     data->csfml = false;
     data->spe_dump = false;
+    data->paused = false;
     data->speed = 1;
     data->dump_cycle = -1;
     data->next_prog_number = -1;
