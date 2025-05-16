@@ -15,8 +15,7 @@
     #include "printf.h" // my_printf
 
     /* type */
-    #include "linked.h" // linked_list_t
-    #include "hashtable.h" // hashtable_t
+    #include "define.h" // stdin & stderr & stdout
     #include "array.h" // array_t
 
     //----------------------------------------------------------------//
@@ -110,9 +109,5 @@ int my_putnbr_base(int fd, unsigned long long nbr,
 
 /* dump */
 int str_array_dump(char **array); // Error: KO
-int ht_dump(hashtable_t *ht); // Error: KO
-int array_dump(array_t *array, int (*display_ptr)(void *)); // Error: KO
-int linked_dump(int (*display_data)(void *data),
-    linked_list_t *head); // Error: KO
 
 #endif /* WRITE_H */
