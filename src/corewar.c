@@ -68,6 +68,30 @@ static int dump(main_data_t *data)
     return OK;
 }
 
+static bool is_not_end(main_data_t *data)
+{
+    int alive = 0;
+
+    if (!data)
+        return err_prog(PTR_ERR, true, ERR_INFO);
+    for (size_t i = 0; i < data->champions->len; i++)
+        alive += data->live_status[i];
+    if (alive <= 1)
+        return false;
+    return true;
+}
+
+static bool is_tie(main_data_t *data, int *alive)
+{
+    if (!data || !alive)
+        return err_prog(PTR_ERR, true, ERR_INFO);
+    for (size_t i = 0; *alive == KO && i < data->champions->len; i++)
+        *alive = i - (i + 1) * !data->live_status[i];
+    if (*alive == KO)
+        return true;
+    return false;
+}
+
 static int who_as_won(main_data_t *data)
 {
     champion_t *champion = NULL;
@@ -76,9 +100,9 @@ static int who_as_won(main_data_t *data)
 
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    for (size_t i = 0; alive == KO && i < data->champions->len; i++)
-        alive = i - (i + 1) * !data->live_status[i];
-    if (alive == KO)
+    if (is_not_end(data))
+        return my_putstr(STDOUT, "Stoped before end, no player has won.\n");
+    if (is_tie(data, &alive))
         return my_putstr(STDOUT, "It's a tie, no player has won.\n");
     champion = data->champions->data[alive];
     res += my_putstr(STDOUT, "The player ");
@@ -100,6 +124,12 @@ static int loop(main_data_t *data)
     while (!is_end(data->live_status, data->champions->len)) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
+        if (!data->no_graphics && data->csfml
+            && data->total_cycle % data->speed == 0
+            && render_csfml(data) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (data->paused)
+            continue;
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
@@ -115,9 +145,10 @@ static int loop(main_data_t *data)
     return who_as_won(data);
 }
 
-int corewar(int const argc, char const *argv[], main_data_t *data)
+int corewar(int const argc, char const *argv[], char const *env[],
+    main_data_t *data)
 {
-    if (!data || !argv)
+    if (!data || !argv || !env)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     if (init_data(data) == KO)
         return err_custom("Data initialisation error", FATAL_ERR, ERR_INFO);
@@ -127,7 +158,7 @@ int corewar(int const argc, char const *argv[], main_data_t *data)
         return OK;
     if (setup(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    if (display_graphics(data) == KO)
+    if (!data->no_graphics && data->csfml && init_csfml(data, env) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (loop(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

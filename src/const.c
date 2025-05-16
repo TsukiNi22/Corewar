@@ -5,8 +5,16 @@
 ** Global const
 */
 
+#include "write.h"
 #include "corewar.h"
 #include <stddef.h>
+
+int const color_champions[] = {
+    B_GREEN,
+    B_YELLOW,
+    B_BLUE,
+    B_MAGENTA,
+};
 
 char const *flags[] = {
     "-h",
@@ -15,6 +23,8 @@ char const *flags[] = {
     "-n",
     "-a",
     "-ng",
+    "-c",
+    "-s",
     '\0',
 };
 
@@ -25,6 +35,8 @@ char const *full_flags[] = {
     "--number",
     "--address",
     "--no-graphics",
+    "-csfml",
+    "--speed",
     NULL,
 };
 
@@ -35,6 +47,8 @@ int (* const flag_functions[])(main_data_t *, int const, char const *[]) = {
     &flag_number, // n
     &flag_address, // a
     &flag_graphics, // ng
+    &flag_csfml, // c
+    &flag_speed, // s
 };
 
 

@@ -13,11 +13,13 @@ BUILD_DIR := .obj
 
 W := -W -Wall -Wextra -Wpedantic -Wunused-parameter -Wshadow
 W += -Wuninitialized -Wmaybe-uninitialized
+CSFML := -lcsfml-graphics -lcsfml-window -lcsfml-system
 
 DEBUG := -g -ggdb3
 
 CPPFLAGS := -I ./include/
 LDFLAGS := -L ./lib/ -lmy -lncurses
+LDFLAGS += $(CSFML)
 CFLAGS := $(W)
 
 ifeq ($(d), t)
@@ -41,13 +43,16 @@ INIT :=		init/init_data.c \
 			init/data/init_option.c \
 			init/init_argument.c \
 			init/init_champions.c \
+			init/init_csfml.c \
 			init/flag/null.c \
 			init/flag/help.c \
 			init/flag/dump.c \
 			init/flag/ddump.c \
 			init/flag/number.c \
 			init/flag/address.c \
-			init/flag/graphics.c
+			init/flag/graphics.c \
+			init/flag/csfml.c \
+			init/flag/speed.c
 
 OP_CMD := 	op_exe/param.c \
 			op_exe/live.c \
@@ -70,6 +75,12 @@ OP_CMD := 	op_exe/param.c \
 GRAPHICS	:=	graphics_while.c
 
 FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(GRAPHICS)
+RENDER := 	render/render_csfml.c \
+			render/render_box.c \
+			render/render_info.c \
+			render/render_memory.c
+
+FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(RENDER) $(GRAPHICS)
 SRC := $(addprefix src/, $(FILES))
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 
@@ -112,6 +123,12 @@ tests_run:    unit_tests
 	@./$(TEST_TARGET)
 	@gcovr . --exclude tests/ --exclude lib/
 
+set_font:
+	@echo "Setup the font in \'/usr/share/fonts/liberation-mono/\'..."
+	@sudo mkdir -p /usr/share/fonts/liberation-mono
+	@sudo cp font/LiberationMono-Regular.ttf \
+	/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf
+
 sys_cmd: $(TARGET)
 	@echo "Copying the target in \'/usr/local/bin\'..."
 	@sudo cp $(TARGET) /usr/local/bin/$(TARGET)
@@ -137,5 +154,5 @@ get_unknow_files:
                 rm -f missing_files.txt; \
         fi
 
-.PHONY: all lib clean fclean re tests_run sys_cmd \
+.PHONY: all lib clean fclean re tests_run sys_cmd set_font \
 	get_unregistered_files get_unknow_files
