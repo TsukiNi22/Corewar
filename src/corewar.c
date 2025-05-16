@@ -120,7 +120,7 @@ static int loop(main_data_t *data)
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
     while (!is_end(data->live_status, data->champions->len) && (!data->csfml
-        || data->no_graphics  || sfRenderWindow_isOpen(data->window))) {
+        || data->no_graphics || sfRenderWindow_isOpen(data->window))) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
         if (!data->no_graphics && data->csfml
@@ -133,7 +133,7 @@ static int loop(main_data_t *data)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    }    
+    }
     if (data->dump_cycle != KO && dump(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     return who_as_won(data);
