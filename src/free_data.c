@@ -9,6 +9,7 @@
 #include "corewar.h"
 #include "error.h"
 #include <stdlib.h>
+#include <ncurses.h>
 #include <SFML/Graphics.h>
 
 static int free_ptr(void *ptr)
@@ -57,5 +58,7 @@ int free_data(main_data_t *data)
         return err_prog(UNDEF_ERR, EPITECH_ERR, ERR_INFO);
     if (free_csfml(data) == KO)
         return err_prog(UNDEF_ERR, EPITECH_ERR, ERR_INFO);
+    if (!data->no_graphics && !data->csfml)
+        curs_set(TRUE);
     return OK;
 }
