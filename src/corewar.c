@@ -148,14 +148,14 @@ int init_ncurses(main_data_t *data)
     while (!is_end(data->live_status, data->champions->len)) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
-        if (exe_memory(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (update_cycle(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (while_cond(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (data->getch == 'q' || data->getch == 'Q' || data->alive == 1)
             break;
+        if (exe_memory(data) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
+        if (update_cycle(data) == KO)
+            return err_prog(UNDEF_ERR, KO, ERR_INFO);
     }
     if (data->dump_cycle != KO && dump(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);

@@ -89,7 +89,11 @@ int while_cond(main_data_t *data)
     if (!data)
         return KO;
     clear();
-    printw("actual cycle :%d\n", data->actual_cycle);
+    printw("Total cycle -> %-10d Cycle to die: %4d/%4d "
+    "\t\tLive number: %2d/%d\n",
+    data->total_cycle,
+    data->actual_cycle, data->cycle_to_die,
+    data->nbr_live, NBR_LIVE);
     dump_custom_graphics(data->champions, data->memory, data->apartenance);
     refresh();
     data->getch = getch();
