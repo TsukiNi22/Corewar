@@ -75,10 +75,11 @@ int dump_custom_graphics(array_t *champions,
     unsigned char memory[MEM_SIZE], int apartenance[MEM_SIZE])
 {
     int pair_id = 0;
+    int i = 0;
 
     if (!champions || !memory || !apartenance)
         return KO;
-    for (int i = 0; i < MEM_SIZE; i++) {
+    for (i = 0; i < MEM_SIZE; i++) {
         if (i != 0 && i % 64 == 0)
             printw("\n");
         pair_id = set_color_byte(champions, i, apartenance[i]);
@@ -96,12 +97,10 @@ int while_cond(main_data_t *data)
         return KO;
     clear();
     printw("actual cycle :%d\n", data->actual_cycle);
-    if (data->actual_cycle == 0)
-        data->alive++;
     dump_custom_graphics(data->champions, data->memory, data->apartenance);
     refresh();
     data->getch = getch();
-    usleep(1000);
+    usleep(5000);
     return OK;
 }
 
