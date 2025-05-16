@@ -18,13 +18,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-static const int color_champions[] = {
-    B_GREEN,
-    B_YELLOW,
-    B_BLUE,
-    B_MAGENTA,
-};
-
 int my_back_color(back_color_t back)
 {
     int bg = back - 40;
@@ -114,5 +107,7 @@ int display_graphics(main_data_t *data)
     start_color();
     use_default_colors();
     keypad(stdscr, TRUE);
+    noecho();
+    nodelay(stdscr, TRUE);
     return OK;
 }
