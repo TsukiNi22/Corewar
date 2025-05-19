@@ -72,15 +72,7 @@ OP_CMD := 	op_exe/param.c \
 			op_exe/lfork.c \
 			op_exe/aff.c
 
-GRAPHICS	:=	graphics_while.c
-
-FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(GRAPHICS)
-RENDER := 	render/render_csfml.c \
-			render/render_box.c \
-			render/render_info.c \
-			render/render_memory.c
-
-FILES := $(GLOBAL) $(INIT) $(OP_CMD) $(RENDER) $(GRAPHICS)
+FILES := $(GLOBAL) $(INIT) $(OP_CMD)
 SRC := $(addprefix src/, $(FILES))
 OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 

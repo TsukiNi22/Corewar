@@ -119,39 +119,11 @@ static int loop(main_data_t *data)
 {
     if (!data)
         return err_prog(PTR_ERR, KO, ERR_INFO);
-    while (!is_end(data->live_status, data->champions->len) && (!data->csfml
-        || data->no_graphics || sfRenderWindow_isOpen(data->window))) {
-        if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
-            return dump(data);
-        if (!data->no_graphics && data->csfml
-            && data->total_cycle % data->speed == 0
-            && render_csfml(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (data->paused)
-            continue;
-        if (exe_memory(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (update_cycle(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    }
-    if (data->dump_cycle != KO && dump(data) == KO)
-        return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    return who_as_won(data);
-}
-
-int init_ncurses(main_data_t *data)
-{
-    if (!data)
-        return err_prog(PTR_ERR, KO, ERR_INFO);
-    if (display_graphics(data) == KO)
-        return err_prog(PTR_ERR, KO, ERR_INFO);
     while (!is_end(data->live_status, data->champions->len)) {
         if (data->dump_cycle != KO && data->total_cycle >= data->dump_cycle)
             return dump(data);
-        if (while_cond(data) == KO)
-            return err_prog(UNDEF_ERR, KO, ERR_INFO);
-        if (data->getch == 'q' || data->getch == 'Q' || data->alive == 1)
-            break;
+        if (data->paused)
+            continue;
         if (exe_memory(data) == KO)
             return err_prog(UNDEF_ERR, KO, ERR_INFO);
         if (update_cycle(data) == KO)
@@ -174,10 +146,6 @@ int corewar(int const argc, char const *argv[], char const *env[],
     if (data->help)
         return OK;
     if (setup(data) == KO)
-        return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    if (!data->no_graphics && data->csfml && init_csfml(data, env) == KO)
-        return err_prog(UNDEF_ERR, KO, ERR_INFO);
-    if (!data->no_graphics && !data->csfml && init_ncurses(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
     if (loop(data) == KO)
         return err_prog(UNDEF_ERR, KO, ERR_INFO);
